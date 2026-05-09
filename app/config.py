@@ -32,8 +32,8 @@ class Config:
             "mysql://", "mysql+pymysql://"
         )
     else:
-        # Localhost MySQL on port 3307, no password
-        SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost:3307/petsona"
+        # Railway MySQL connection
+        SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:parjrgCJmevLFdtYfOnYvEkjIljutGsu@turntable.proxy.rlwy.net:41200/railway"
 
     # =========================
     # MAIL
@@ -95,8 +95,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SESSION_COOKIE_SECURE = False
 
-    # Use local MySQL for development
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost:3307/petsona"
+    # Use Railway MySQL for development
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:parjrgCJmevLFdtYfOnYvEkjIljutGsu@turntable.proxy.rlwy.net:41200/railway"
 
     RESET_TOKEN_EXPIRY = int(os.getenv("RESET_TOKEN_EXPIRY", 3600))
 
