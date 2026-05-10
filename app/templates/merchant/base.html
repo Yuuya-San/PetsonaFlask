@@ -110,16 +110,49 @@
 <!-- ================= MODALS ================= -->
 {% include 'partials/notification-modal.html' %}
 
-<!-- ================= JS ================= -->
-<!-- Socket.IO for Real-time Updates -->
+<!-- ================= JS: CRITICAL DEPENDENCIES ================= -->
+<!-- 1. jQuery (Required by AdminLTE and Bootstrap 4) -->
+<script src="{{ url_for('static', filename='admin/plugins/jquery/jquery.min.js') }}?v=3.6.0"></script>
+<script>
+  // Fallback jQuery from CDN if local load fails
+  if (typeof window.jQuery === 'undefined') {
+    var fallbackScript = document.createElement('script');
+    fallbackScript.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
+    fallbackScript.integrity = 'sha256-/xUj+3OJ+Y3oAKiH6jyCmMJk3Hr6zvN3O82ijvs0yvc=';
+    fallbackScript.crossOrigin = 'anonymous';
+    fallbackScript.onload = function() { console.log('[AdminLTE] jQuery loaded from CDN fallback'); };
+    fallbackScript.onerror = function() { console.error('[AdminLTE] jQuery CDN fallback failed'); };
+    document.head.appendChild(fallbackScript);
+  }
+</script>
+
+<!-- 2. Bootstrap 4 JS (Required by AdminLTE) -->
+<script src="{{ url_for('static', filename='admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}?v=4.6.2"></script>
+
+<!-- 3. AdminLTE Application Script -->
+<script src="{{ url_for('static', filename='admin/dist/js/adminlte.min.js') }}?v=3.2.0"></script>
+
+<!-- 4. Socket.IO for Real-time Updates -->
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-<script src="{{ url_for('static', filename='admin/plugins/jquery/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ url_for('static', filename='admin/dist/js/adminlte.min.js') }}"></script>
-<script src="{{ url_for('static', filename='shared/loader.js') }}"></script>
-<script src="{{ url_for('static', filename='js/navbar-socket.js') }}"></script>
-<script src="{{ url_for('static', filename='js/navbar-notifications.js') }}"></script>
-<script src="{{ url_for('static', filename='js/socket-manager.js') }}"></script>
+
+<!-- 5. Custom Application Scripts -->
+<script src="{{ url_for('static', filename='shared/loader.js') }}?v=1.0"></script>
+<script src="{{ url_for('static', filename='js/navbar-socket.js') }}?v=1.0"></script>
+<script src="{{ url_for('static', filename='js/navbar-notifications.js') }}?v=1.0"></script>
+<script src="{{ url_for('static', filename='js/socket-manager.js') }}?v=1.0"></script>
+
+<!-- ================= ADMINLTE INITIALIZATION ================= -->
+<script>
+  $(document).ready(function() {
+    try {
+      // Initialize AdminLTE layout
+      $('body').layout();
+      console.log('[AdminLTE] Layout initialized successfully');
+    } catch (error) {
+      console.error('[AdminLTE] Layout initialization failed:', error);
+    }
+  });
+</script>
 
 <!-- ================= SKELETON HANDLER ================= -->
 <script>
