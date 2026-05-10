@@ -1,6 +1,7 @@
 import pymysql # pyright: ignore[reportMissingModuleSource]
 from flask import current_app # pyright: ignore[reportMissingImports]
 from sqlalchemy import create_engine # pyright: ignore[reportMissingImports]
+from urllib.parse import urlparse
 
 def ensure_database_exists():
     """
@@ -8,10 +9,13 @@ def ensure_database_exists():
     Creates the database if missing.
     """
 
-    db_user = current_app.config["DB_USERNAME"]
-    db_pass = current_app.config["DB_PASSWORD"]
-    db_host = current_app.config["DB_HOST"]
-    db_name = current_app.config["DB_NAME"]
+    uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
+    parsed = urlparse(uri)
+    
+    db_user = parsed.username
+    db_pass = parsed.password
+    db_host = parsed.hostname
+    db_name = parsed.path.lstrip('/')
 
     # Connect to MySQL server (NOT to a database)
     connection = pymysql.connect(
