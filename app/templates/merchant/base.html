@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/custom.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='shared/navbar-sidebar.css') }}">
 
     <!-- Custom -->
     <link rel="stylesheet" href="{{ url_for('static', filename='merchant/custom.css') }}">
@@ -56,12 +55,8 @@
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed bg-gradient-to-br from-white via-purple-50 to-white">
 <div class="wrapper">
 
-    {% set navbar_variant = 'merchant' %}
-    {% set sidebar_variant = 'merchant' %}
-    {% set brand_url = url_for('merchant.dashboard') %}
-    {% set brand_text = 'Merchant' %}
-    {% include 'shared/navbar.html' %}
-    {% include 'shared/sidebar.html' %}
+    {% include 'merchant/partials/navbar.html' %}
+    {% include 'merchant/partials/sidebar.html' %}
 
     <!-- ================= ACTION LOADER (BUTTON / FORM) ================= -->
     {% include 'shared/loader.html' %}

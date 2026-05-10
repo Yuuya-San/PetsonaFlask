@@ -20,7 +20,6 @@
 
     <!-- Custom -->
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/custom.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='shared/navbar-sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/user_form.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/all_user.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/audit_logs.css') }}">
@@ -57,12 +56,8 @@
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed bg-gradient-to-br from-white via-purple-50 to-white">
 <div class="wrapper">
 
-    {% set navbar_variant = 'admin' %}
-    {% set sidebar_variant = 'admin' %}
-    {% set brand_url = url_for('admin.dashboard') %}
-    {% set brand_text = 'PetSona' %}
-    {% include 'shared/navbar.html' %}
-    {% include 'shared/sidebar.html' %}
+    {% include 'admin/partials/navbar.html' %}
+    {% include 'admin/partials/sidebar.html' %}
 
     <!-- ================= ACTION LOADER (EXISTING) ================= -->
     {% include 'shared/loader.html' %}

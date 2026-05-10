@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/custom.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='shared/navbar-sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/compatibility-scores.css') }}">
     
     <!-- Custom -->
@@ -57,12 +56,8 @@
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed bg-gradient-to-br from-white via-purple-50 to-white">
 <div class="wrapper">
 
-    {% set navbar_variant = 'user' %}
-    {% set sidebar_variant = 'user' %}
-    {% set brand_url = url_for('user.dashboard') %}
-    {% set brand_text = 'PetSona' %}
-    {% include 'shared/navbar.html' %}
-    {% include 'shared/sidebar.html' %}
+    {% include 'user/partials/navbar.html' %}
+    {% include 'user/partials/sidebar.html' %}
 
     <!-- ================= ACTION LOADER (EXISTING) ================= -->
     {% include 'shared/loader.html' %}
