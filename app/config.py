@@ -57,9 +57,9 @@ class Config:
     # =========================
     # RECAPTCHA V3 CONFIG
     # =========================
-    RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "6Le4c94sAAAAADh1YOljhLnxWDxvrMbGCDzSXcWT")
-    RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY", "6Le4c94sAAAAAHVDiFrjrGYM6c6bdBs0KhnS72VN")
-    RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))
+    # RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "6Le4c94sAAAAADh1YOljhLnxWDxvrMbGCDzSXcWT")
+    # RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY", "6Le4c94sAAAAAHVDiFrjrGYM6c6bdBs0KhnS72VN")
+    # RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))
 
     # =========================
     # FILE UPLOAD
@@ -125,45 +125,46 @@ class ProductionConfig(Config):
     MAX_FAILED_LOGIN = int(os.getenv("MAX_FAILED_LOGIN", 5))
     LOCKOUT_TIME = int(os.getenv("LOCKOUT_TIME", 300))
 
-    CSP = {
-        "default-src": ["'self'"],
-
-        "script-src": [
-            "'self'",
-            "https://www.google.com",
-            "https://www.gstatic.com",
-            "https://unpkg.com",
-            "https://cdnjs.cloudflare.com",
-            "lordicon.com"
-        ],
-
-        "style-src": [
-            "'self'",
-            "https://fonts.googleapis.com",
-            "https://cdnjs.cloudflare.com"
-        ],
-
-        "font-src": [
-            "'self'",
-            "https://fonts.gstatic.com",
-            "https://cdnjs.cloudflare.com"
-        ],
-
-        "img-src": [
-            "'self'",
-            "data:",
-            "https://www.google.com",
-            "https://www.gstatic.com"
-        ],
-
-        "connect-src": [
-            "'self'",
-            "https://www.google.com"
-        ],
-
-        "frame-src": [
-            "https://www.google.com"
-        ],
-    }
+    # CSP removed to prevent internal server errors
+    # CSP = {
+    #     "default-src": ["'self'"],
+    #
+    #     "script-src": [
+    #         "'self'",
+    #         "https://www.google.com",
+    #         "https://www.gstatic.com",
+    #         "https://unpkg.com",
+    #         "https://cdnjs.cloudflare.com",
+    #         "lordicon.com"
+    #     ],
+    #
+    #     "style-src": [
+    #         "'self'",
+    #         "https://fonts.googleapis.com",
+    #         "https://cdnjs.cloudflare.com"
+    #     ],
+    #
+    #     "font-src": [
+    #         "'self'",
+    #         "https://fonts.gstatic.com",
+    #         "https://cdnjs.cloudflare.com"
+    #     ],
+    #
+    #     "img-src": [
+    #         "'self'",
+    #         "data:",
+    #         "https://www.google.com",
+    #         "https://www.gstatic.com"
+    #     ],
+    #
+    #     "connect-src": [
+    #         "'self'",
+    #         "https://www.google.com"
+    #     ],
+    #
+    #     "frame-src": [
+    #         "https://www.google.com"
+    #     ],
+    # }
 
     FRONTEND_URL = os.getenv("FRONTEND_URL", None)
