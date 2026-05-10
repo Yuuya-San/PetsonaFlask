@@ -88,19 +88,6 @@ class Config:
 
 
 # =========================
-# DEVELOPMENT CONFIG
-# =========================
-class DevelopmentConfig(Config):
-    DEBUG = True
-    SESSION_COOKIE_SECURE = False
-
-    # Use local MySQL for development
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost:3307/petsona"
-
-    RESET_TOKEN_EXPIRY = int(os.getenv("RESET_TOKEN_EXPIRY", 3600))
-
-
-# =========================
 # PRODUCTION CONFIG
 # =========================
 class ProductionConfig(Config):
