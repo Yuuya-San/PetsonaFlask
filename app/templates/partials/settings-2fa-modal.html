@@ -841,15 +841,17 @@
     
     document.body.appendChild(alertDiv);
     
-    // Use jQuery if available, otherwise just show it
-    if (typeof $ !== 'undefined') {
+    // Use Bootstrap alert if jQuery is available, otherwise just remove after delay
+    if (typeof $ !== 'undefined' && $.fn && typeof $.fn.alert === 'function') {
       $(alertDiv).alert();
       setTimeout(() => {
         $(alertDiv).alert('close');
       }, 5000);
     } else {
       setTimeout(() => {
-        alertDiv.remove();
+        if (alertDiv.parentNode) {
+          alertDiv.parentNode.removeChild(alertDiv);
+        }
       }, 5000);
     }
   }
