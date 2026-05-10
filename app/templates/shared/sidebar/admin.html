@@ -1,0 +1,66 @@
+<li class="nav-item">
+  <a href="{{ url_for('admin.dashboard') }}" class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+    <i class="nav-icon fas fa-home"></i>
+    <p>Dashboard</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('admin.users') }}" class="nav-link {% if request.endpoint == 'admin.users' %}active{% endif %}">
+    <i class="nav-icon fas fa-users"></i>
+    <p>All Users</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('admin.admin_add_user') }}" class="nav-link {% if request.endpoint == 'admin.admin_add_user' %}active{% endif %}">
+    <i class="nav-icon fas fa-user-plus"></i>
+    <p>Add User</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('admin.merchant_applications') }}" class="nav-link {% if request.endpoint == 'admin.merchant_applications' %}active{% endif %}">
+    <i class="nav-icon fa-solid fa-address-card"></i>
+    <p>Pending Applications</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('admin.archive_users') }}" class="nav-link {% if request.endpoint == 'admin.archive_users' %}active{% endif %}">
+    <i class="nav-icon fas fa-archive"></i>
+    <p>Archive Users</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('pets.species_index') }}" class="nav-link {% if request.path.startswith('/pets/species') %}active{% endif %}">
+    <i class="nav-icon fa-solid fa-database"></i>
+    <p>Pet Database</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('matching.quiz') }}" class="nav-link {% if request.endpoint == 'matching.quiz' %}active{% endif %}">
+    <i class="nav-icon fas fa-heartbeat"></i>
+    <p>Match Pet</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('matching.history') }}" class="nav-link {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active{% endif %}">
+    <i class="nav-icon fas fa-history"></i>
+    <p>Match History</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('pets.archived_items') }}" class="nav-link {% if request.endpoint == 'pets.archived_items' %}active{% endif %}">
+    <i class="nav-icon fa-solid fa-folder-minus"></i>
+    <p>Archived Pets</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('admin.audit_logs') }}" class="nav-link {% if request.endpoint == 'admin.audit_logs' %}active{% endif %}">
+    <i class="nav-icon fas fa-file-alt"></i>
+    <p>Audit Logs</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('admin.archive_audit_logs') }}" class="nav-link {% if request.endpoint == 'admin.archive_audit_logs' %}active{% endif %}">
+    <i class="nav-icon fa-solid fa-file-zipper"></i>
+    <p>Archive Audit</p>
+  </a>
+</li>

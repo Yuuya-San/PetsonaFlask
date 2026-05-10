@@ -1,0 +1,48 @@
+<li class="nav-item">
+  <a href="{{ url_for('merchant.dashboard') }}" class="nav-link {% if request.endpoint == 'merchant.dashboard' %}active{% endif %}">
+    <i class="nav-icon fas fa-home"></i>
+    <p>Dashboard</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('profile.profile') }}" class="nav-link {% if request.endpoint == 'profile.profile' %}active{% endif %}">
+    <i class="nav-icon fas fa-user-edit"></i>
+    <p>My Profile</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('merchant.species_index') }}" class="nav-link {% if request.endpoint in ['merchant.species_index', 'merchant.view_species'] %}active{% endif %}">
+    <i class="nav-icon fa-solid fa-database"></i>
+    <p>Pet Database</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('matching.quiz') }}" class="nav-link {% if request.endpoint == 'matching.quiz' %}active{% endif %}">
+    <i class="nav-icon fas fa-heartbeat"></i>
+    <p>Match Pet</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('matching.history') }}" class="nav-link {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active{% endif %}">
+    <i class="nav-icon fas fa-history"></i>
+    <p>Match History</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('merchant.store') }}" class="nav-link {% if request.endpoint in ['merchant.store', 'merchant.store_edit'] %}active{% endif %}">
+    <i class="nav-icon fas fa-store"></i>
+    <p>Store</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('merchant.bookings_list') }}" class="nav-link {% if request.endpoint == 'merchant.bookings_list' %}active{% endif %}">
+    <i class="nav-icon fas fa-calendar"></i>
+    <p>Bookings</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ url_for('messages.support') }}" class="nav-link {% if request.endpoint == 'messages.support' %}active{% endif %}">
+    <i class="nav-icon fas fa-headset"></i>
+    <p>Support</p>
+  </a>
+</li>

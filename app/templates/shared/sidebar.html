@@ -1,0 +1,14 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <a href="{{ brand_url }}" class="brand-link">
+    <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="brand-logo">
+    <span class="brand-text font-weight-light">{{ brand_text or 'PetSona' }}</span>
+  </a>
+
+  <div class="sidebar">
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" data-accordion="false" role="menu">
+        {% include 'shared/sidebar/' ~ sidebar_variant ~ '.html' %}
+      </ul>
+    </nav>
+  </div>
+</aside>
