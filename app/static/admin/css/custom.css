@@ -22,40 +22,26 @@ body,
 }
 
 /* ===============================
-   DEPLOYMENT SAFETY - FORCE HIDDEN ELEMENTS
+   DROPDOWN + MODAL SAFETY
 ================================ */
-.dropdown-menu:not(.show) {
+.dropdown-menu {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     transform: translateY(-6px) !important;
     transition: opacity 0.2s ease, transform 0.2s ease !important;
-    pointer-events: none !important;
 }
-
 .dropdown-menu.show {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
     transform: translateY(0) !important;
-    pointer-events: auto !important;
 }
-
-.modal:not(.show) {
+.modal {
     display: none !important;
-    visibility: hidden !important;
 }
-
 .modal.show {
     display: block !important;
-    visibility: visible !important;
-}
-
-/* Force sidebar closed on mobile by default */
-@media (max-width: 1023.98px) {
-    .main-sidebar:not(.sidebar-open) {
-        transform: translateX(-100%) !important;
-    }
 }
 
 /* ===============================
@@ -81,12 +67,7 @@ body,
         /* Shadow for depth */
         box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
 
-        /* Layout */
-        position: fixed !important;
-        top: 56px; /* navbar height */
-        bottom: 0;
-        width: 250px !important;
-        overflow-y: scroll;
+        /* Layout - let AdminLTE handle positioning */
         font-size: 0.9rem;
 
         /* Hide scrollbar */
@@ -138,26 +119,8 @@ body,
         /* Shadow for depth */
         box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
 
-        /* Layout for mobile */
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        height: 100vh !important;
-        width: 250px !important;
-        z-index: 1050 !important;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease !important;
-    }
-
-    body.sidebar-open .main-sidebar {
-        transform: translateX(0) !important;
-    }
-
-    .content-wrapper,
-    .main-header,
-    .main-footer {
-        margin-left: 0 !important;
-        width: 100% !important;
+        /* Layout - let AdminLTE handle positioning */
+        font-size: 0.8rem;
     }
 
     /* Text inside sidebar */
