@@ -120,22 +120,10 @@
 <script src="{{ url_for('static', filename='admin/dist/js/adminlte.min.js') }}"></script>
 
 <!-- AdminLTE Initialization -->
-<script>
-$(document).ready(function() {
-    // Initialize AdminLTE layout
-    $('body').layout();
-});
-</script>
+<script src="{{ url_for('static', filename='admin/js/adminlte-navbar-sidebar.js') }}"></script>
 <script src="{{ url_for('static', filename='shared/loader.js') }}"></script>
 <script src="{{ url_for('static', filename='js/socket-manager.js') }}"></script>
 <script src="{{ url_for('static', filename='js/navbar-notifications.js') }}"></script>
-
-
-
-<!-- Deployment-safe fallback UI controller -->
-<script src="{{ url_for('static', filename='shared/petsona-ui-fallback.js') }}"></script>
-
-
 
 <!-- ================= SKELETON HANDLER ================= -->
 <script>
@@ -187,36 +175,7 @@ document.querySelectorAll('.flash').forEach(flash => {
         flash.style.animationPlayState = 'running';
     });
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const body = document.body;
-
-    // Initialize sidebar state based on screen size
-    function initializeSidebar() {
-        if (window.innerWidth >= 1024) {
-            // Desktop: collapsed by default
-            body.classList.add("sidebar-collapse");
-            body.classList.remove("sidebar-open");
-        } else {
-            // Mobile: hidden by default
-            body.classList.remove("sidebar-open");
-            body.classList.add("sidebar-collapse");
-        }
-    }
-
-    // Initialize on load
-    initializeSidebar();
-
-    // Handle window resize
-    window.addEventListener("resize", function () {
-        setTimeout(initializeSidebar, 150);
-    });
-
-});
-
 </script>
 
-{% block scripts %}{% endblock %}
 </body>
 </html>
