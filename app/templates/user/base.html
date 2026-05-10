@@ -118,21 +118,197 @@
 <script src="{{ url_for('static', filename='admin/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='admin/dist/js/adminlte.min.js') }}"></script>
+
+<!-- Custom Navbar/Sidebar Controller - Deployment Safe -->
 <script>
-$(document).ready(function() {
-    // Initialize AdminLTE components
-    $('body').layout();
-    
-    // Ensure pushmenu is working
-    $('[data-widget="pushmenu"]').on('click', function(e) {
-        e.preventDefault();
-        $('body').toggleClass('sidebar-open');
-    });
-});
+(function() {
+    'use strict';
+
+    // Wait for DOM and dependencies
+    function initializePetsonaUI() {
+        if (typeof $ === 'undefined' || typeof $.fn === 'undefined') {
+            setTimeout(initializePetsonaUI, 100);
+            return;
+        }
+
+        // Robust sidebar controller
+        var SidebarController = {
+            isOpen: false,
+            isMobile: false,
+
+            init: function() {
+                this.checkMobile();
+                this.bindEvents();
+                this.setInitialState();
+                this.setupResizeHandler();
+            },
+
+            checkMobile: function() {
+                this.isMobile = window.innerWidth < 1024;
+            },
+
+            bindEvents: function() {
+                var self = this;
+
+                // Multiple selector strategies for reliability
+                $('[data-widget="pushmenu"], .sidebar-toggle-icon-sm, .nav-link.sidebar-toggle-icon-sm').off('click.petsona').on('click.petsona', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    self.toggle();
+                });
+
+                // Close on overlay click (mobile only)
+                $('.content-wrapper').off('click.petsona').on('click.petsona', function() {
+                    if (self.isMobile && self.isOpen) {
+                        self.close();
+                    }
+                });
+
+                // ESC key to close
+                $(document).off('keydown.petsona').on('keydown.petsona', function(e) {
+                    if (e.keyCode === 27 && self.isMobile && self.isOpen) {
+                        self.close();
+                    }
+                });
+            },
+
+            setInitialState: function() {
+                var body = $('body');
+                this.isOpen = body.hasClass('sidebar-open');
+
+                if (this.isMobile) {
+                    body.removeClass('sidebar-collapse');
+                    if (!this.isOpen) {
+                        $('.main-sidebar').css('transform', 'translateX(-100%)');
+                    }
+                } else {
+                    body.addClass('sidebar-collapse');
+                    $('.main-sidebar').css('transform', '');
+                }
+            },
+
+            toggle: function() {
+                this.isOpen ? this.close() : this.open();
+            },
+
+            open: function() {
+                if (this.isOpen) return;
+                this.isOpen = true;
+
+                $('body').addClass('sidebar-open');
+                $('.main-sidebar').css('transform', 'translateX(0)');
+
+                // Prevent body scroll on mobile
+                if (this.isMobile) {
+                    $('body').css('overflow', 'hidden');
+                }
+            },
+
+            close: function() {
+                if (!this.isOpen) return;
+                this.isOpen = false;
+
+                $('body').removeClass('sidebar-open');
+                $('.main-sidebar').css('transform', 'translateX(-100%)');
+
+                // Restore body scroll
+                $('body').css('overflow', '');
+            },
+
+            setupResizeHandler: function() {
+                var self = this;
+                var resizeTimeout;
+
+                $(window).off('resize.petsona').on('resize.petsona', function() {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(function() {
+                        var wasMobile = self.isMobile;
+                        self.checkMobile();
+
+                        if (wasMobile !== self.isMobile) {
+                            self.setInitialState();
+                        }
+                    }, 250);
+                });
+            }
+        };
+
+        // Initialize sidebar controller
+        SidebarController.init();
+
+        // Safe dropdown initialization
+        function initializeDropdowns() {
+            $('.dropdown-toggle').each(function() {
+                var $toggle = $(this);
+                var $menu = $toggle.siblings('.dropdown-menu');
+
+                if ($menu.length) {
+                    $toggle.off('click.petsona-dropdown').on('click.petsona-dropdown', function(e) {
+                        e.preventDefault();
+
+                        // Close other dropdowns
+                        $('.dropdown-menu.show').not($menu).removeClass('show');
+
+                        // Toggle this dropdown
+                        $menu.toggleClass('show');
+
+                        // Update aria-expanded
+                        var isExpanded = $menu.hasClass('show');
+                        $toggle.attr('aria-expanded', isExpanded);
+                    });
+                }
+            });
+
+            // Close dropdowns when clicking outside
+            $(document).off('click.petsona-dropdown-close').on('click.petsona-dropdown-close', function(e) {
+                if (!$(e.target).closest('.dropdown').length) {
+                    $('.dropdown-menu.show').removeClass('show');
+                    $('.dropdown-toggle[aria-expanded="true"]').attr('aria-expanded', 'false');
+                }
+            });
+        }
+
+        // Initialize dropdowns after a short delay to ensure DOM is ready
+        setTimeout(initializeDropdowns, 100);
+
+        // AdminLTE fallback - only if available
+        if (typeof $.fn.layout !== 'undefined') {
+            try {
+                $('body').layout();
+            } catch (e) {
+                console.warn('AdminLTE layout initialization failed, using fallback:', e);
+            }
+        }
+
+        // Global error handler for UI components
+        window.petsonaUIError = function(component, error) {
+            console.error('Petsona UI Error in ' + component + ':', error);
+            // Could send to error tracking service here
+        };
+
+        console.log('Petsona UI initialized successfully');
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializePetsonaUI);
+    } else {
+        initializePetsonaUI();
+    }
+
+    // Fallback initialization in case DOMContentLoaded doesn't fire
+    setTimeout(initializePetsonaUI, 1000);
+
+})();
 </script>
 <script src="{{ url_for('static', filename='shared/loader.js') }}"></script>
 <script src="{{ url_for('static', filename='js/socket-manager.js') }}"></script>
 <script src="{{ url_for('static', filename='js/navbar-notifications.js') }}"></script>
+
+
+
+<!-- Deployment-safe fallback UI controller -->
+<script src="{{ url_for('static', filename='shared/petsona-ui-fallback.js') }}"></script>
 
 
 
