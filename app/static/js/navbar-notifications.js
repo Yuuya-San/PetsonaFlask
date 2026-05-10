@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeNotificationSocket();
     
     // Find the notifications dropdown trigger
-    const notificationsDropdown = document.querySelector('[data-toggle="dropdown"][href="#"]');
+    const notificationsDropdown = document.querySelector('#notificationDropdownToggle');
     
     if (notificationsDropdown) {
         notificationsDropdown.addEventListener('click', function() {
