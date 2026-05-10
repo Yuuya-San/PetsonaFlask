@@ -32,7 +32,7 @@ class Config:
             "mysql://", "mysql+pymysql://"
         )
     else:
-        SQLALCHEMY_DATABASE_URI = "mysql+pymysql://petsona_user:StrongPassword123!@localhost/petsona_db"
+        SQLALCHEMY_DATABASE_URI = "mysql+pymysql://petsona_user:Petsona-0717@localhost/petsona_db"
 
     # =========================
     # MAIL
@@ -85,19 +85,6 @@ class Config:
                 "scope": "openid email profile"
             }
         )
-
-
-# =========================
-# DEVELOPMENT CONFIG
-# =========================
-class DevelopmentConfig(Config):
-    DEBUG = True
-    SESSION_COOKIE_SECURE = False
-
-    # Use local MySQL for development
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost:3307/petsona"
-
-    RESET_TOKEN_EXPIRY = int(os.getenv("RESET_TOKEN_EXPIRY", 3600))
 
 
 # =========================
