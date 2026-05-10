@@ -266,6 +266,10 @@ body,
     body.sidebar-mini.sidebar-collapse .main-sidebar:hover ~ .main-footer {
         margin-left: 250px !important;
     }
+
+    body .main-sidebar {
+        transform: none !important;
+    }
 }
 
 /* ===============================
@@ -1092,46 +1096,6 @@ textarea {
 .admin-dashboard {
   padding: 2.8rem;
   overflow: hidden;
-}
-
-/* ===============================
-   ADMINLTE STABLE FALLBACKS
-================================ */
-.main-header {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 1030 !important;
-}
-
-.main-sidebar {
-    transition: width 0.3s ease, margin 0.3s ease, transform 0.3s ease !important;
-    z-index: 1000 !important;
-}
-
-body.sidebar-mini.sidebar-collapse .main-sidebar {
-    width: 80px !important;
-}
-
-body.sidebar-mini.sidebar-collapse .content-wrapper,
-body.sidebar-mini.sidebar-collapse .main-header,
-body.sidebar-mini.sidebar-collapse .main-footer {
-    margin-left: 80px !important;
-}
-
-@media (max-width: 1023.98px) {
-    .main-sidebar {
-        transform: translateX(-100%) !important;
-    }
-
-    body.sidebar-open .main-sidebar {
-        transform: translateX(0) !important;
-    }
-}
-
-.dropdown-menu {
-    z-index: 1051 !important;
 }
 
 /* REMOVE space only for the first section */
