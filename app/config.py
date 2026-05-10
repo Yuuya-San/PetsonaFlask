@@ -127,12 +127,43 @@ class ProductionConfig(Config):
 
     CSP = {
         "default-src": ["'self'"],
-        "script-src": ["'self'", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/", "https://unpkg.com/alpinejs@3.x.x/", "https://cdnjs.cloudflare.com/"],
-        "style-src": ["'self'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com/"],
-        "font-src": ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com/"],
-        "img-src": ["'self'", "data:", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"],
-        "connect-src": ["'self'", "https://www.google.com/recaptcha/"],
-        "frame-src": ["https://www.google.com/recaptcha/"],
+
+        "script-src": [
+            "'self'",
+            "https://www.google.com",
+            "https://www.gstatic.com",
+            "https://unpkg.com",
+            "https://cdnjs.cloudflare.com",
+            "lordicon.com"
+        ],
+
+        "style-src": [
+            "'self'",
+            "https://fonts.googleapis.com",
+            "https://cdnjs.cloudflare.com"
+        ],
+
+        "font-src": [
+            "'self'",
+            "https://fonts.gstatic.com",
+            "https://cdnjs.cloudflare.com"
+        ],
+
+        "img-src": [
+            "'self'",
+            "data:",
+            "https://www.google.com",
+            "https://www.gstatic.com"
+        ],
+
+        "connect-src": [
+            "'self'",
+            "https://www.google.com"
+        ],
+
+        "frame-src": [
+            "https://www.google.com"
+        ],
     }
 
     FRONTEND_URL = os.getenv("FRONTEND_URL", None)
