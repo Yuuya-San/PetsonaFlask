@@ -117,6 +117,18 @@
 <script src="{{ url_for('static', filename='admin/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='admin/dist/js/adminlte.min.js') }}"></script>
+<script>
+$(document).ready(function() {
+    // Initialize AdminLTE components
+    $('body').layout();
+    
+    // Ensure pushmenu is working
+    $('[data-widget="pushmenu"]').on('click', function(e) {
+        e.preventDefault();
+        $('body').toggleClass('sidebar-open');
+    });
+});
+</script>
 <script src="{{ url_for('static', filename='shared/loader.js') }}"></script>
 <script src="{{ url_for('static', filename='js/navbar-socket.js') }}"></script>
 <script src="{{ url_for('static', filename='js/navbar-notifications.js') }}"></script>
@@ -178,25 +190,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const body = document.body;
 
-    function enforceCollapsedSmooth() {
-        if (window.innerWidth >= 992) {
-
-            // Add a temporary transition class
-            body.classList.add("hold-transition");
-
+    // Initialize sidebar state based on screen size
+    function initializeSidebar() {
+        if (window.innerWidth >= 1024) {
+            // Desktop: collapsed by default
+            body.classList.add("sidebar-collapse");
+            body.classList.remove("sidebar-open");
+        } else {
+            // Mobile: hidden by default
             body.classList.remove("sidebar-open");
             body.classList.add("sidebar-collapse");
-
-            // Remove transition helper after animation finishes
-            setTimeout(() => {
-                body.classList.remove("hold-transition");
-            }, 400);
         }
     }
 
-    // Run after AdminLTE resize logic
+    // Initialize on load
+    initializeSidebar();
+
+    // Handle window resize
     window.addEventListener("resize", function () {
-        setTimeout(enforceCollapsedSmooth, 150);
+        setTimeout(initializeSidebar, 150);
     });
 
 });
