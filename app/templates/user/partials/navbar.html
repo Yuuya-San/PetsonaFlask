@@ -3,7 +3,7 @@
   <!-- Responsive Sidebar toggle button -->
   <ul class="navbar-nav toggle-small">
     <li class="nav-item">
-      <a class="nav-link sidebar-toggle-icon-sm" data-widget="pushmenu" href="javascript:void(0)" aria-label="Toggle sidebar" role="button">
+      <a class="nav-link sidebar-toggle-icon-sm" data-widget="pushmenu" href="#" role="button">
         <i class="fas fa-bars"></i>
       </a>
     </li>
@@ -14,7 +14,7 @@
 
     <!-- Notifications Dropdown -->
     <li class="nav-item dropdown">
-      <a id="notificationDropdownToggle" class="nav-link" data-toggle="dropdown" href="javascript:void(0)" aria-haspopup="true" aria-expanded="false" role="button">
+      <a class="nav-link" data-toggle="dropdown" href="#" role="button">
         <i class="far fa-bell"></i>
         <span class="badge badge-warning text-white navbar-badge d-none" id="notification-badge"></span>
       </a>
@@ -39,7 +39,7 @@
 
     <!-- Messages Dropdown -->
     <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" aria-haspopup="true" aria-expanded="false" role="button">
+      <a class="nav-link" data-toggle="dropdown" href="#" role="button">
         <i class="fa-regular fa-message"></i>
         <span class="badge badge-danger navbar-badge" id="unread-msg-badge">{{ unread_badge_count if unread_badge_count > 0 else '' }}</span>
       </a>
@@ -84,7 +84,7 @@
 
     <!-- User Dropdown (Glassmorphism Style) -->
     <li class="nav-item dropdown">
-      <a class="nav-link d-flex align-items-center user-dropdown-trigger" data-toggle="dropdown" href="javascript:void(0)" aria-haspopup="true" aria-expanded="false" role="button">
+      <a class="nav-link d-flex align-items-center user-dropdown-trigger" data-toggle="dropdown" href="#" role="button">
         <!-- User name on left side -->
         <span class="mr-2 font-weight-bold d-none d-md-inline user-name-label">
           {{ current_user.first_name or 'User' }} {{ current_user.last_name or '' }}
@@ -288,7 +288,12 @@
 
 </style>
 
+<!-- Notification Modal -->
+{% include 'partials/notification-modal.html' %}
+
 <!-- Settings Modals -->
 {% include 'partials/settings-account-modal.html' %}
 {% include 'partials/settings-2fa-modal.html' %}
 
+<script src="{{ url_for('static', filename='js/navbar-socket.js') }}"></script>
+<script src="{{ url_for('static', filename='js/navbar-notifications.js') }}"></script>

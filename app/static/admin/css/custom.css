@@ -1,4 +1,28 @@
 /* ===============================
+   ADMINLTE SIDEBAR TOGGLE FIX
+================================ */
+body.sidebar-open .main-sidebar {
+    transform: translateX(0) !important;
+    left: 0 !important;
+}
+
+body.sidebar-collapse .main-sidebar {
+    transform: translateX(-100%) !important;
+}
+
+@media (min-width: 1024px) {
+    body.sidebar-collapse .main-sidebar {
+        transform: translateX(0) !important;
+        left: -250px !important;
+    }
+    
+    body.sidebar-open .main-sidebar {
+        transform: translateX(0) !important;
+        left: 0 !important;
+    }
+}
+
+/* ===============================
    GLOBAL TYPOGRAPHY
 ================================ */
 body,

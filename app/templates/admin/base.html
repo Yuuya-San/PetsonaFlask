@@ -134,6 +134,7 @@
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
 <!-- 5. Custom Application Scripts -->
+<script src="{{ url_for('static', filename='shared/adminlte-init.js') }}?v=1.0"></script>
 <script src="{{ url_for('static', filename='shared/loader.js') }}?v=1.0"></script>
 <script src="{{ url_for('static', filename='admin/js/user_form.js') }}?v=1.0"></script>
 <script src="{{ url_for('static', filename='js/navbar-socket.js') }}?v=1.0"></script>
@@ -141,15 +142,77 @@
 
 <!-- ================= ADMINLTE INITIALIZATION ================= -->
 <script>
-  $(document).ready(function() {
+  // Enhanced AdminLTE initialization with multiple retry strategies
+  function initializeAdminLTE() {
+    console.log('[AdminLTE] Initializing...');
+    
+    // Check if jQuery exists
+    if (typeof jQuery === 'undefined') {
+      console.error('[AdminLTE] jQuery not found');
+      return false;
+    }
+    
+    var $ = jQuery;
+    
+    // Check body classes
+    var bodyClasses = document.body.className;
+    console.log('[AdminLTE] Body classes:', bodyClasses);
+    
+    // Check if AdminLTE's layout method exists
+    if (typeof $.fn.layout !== 'function') {
+      console.error('[AdminLTE] $.fn.layout not found - AdminLTE JS may not be loaded');
+      return false;
+    }
+    
     try {
-      // Initialize AdminLTE layout
+      // Initialize the layout
       $('body').layout();
       console.log('[AdminLTE] Layout initialized successfully');
+      console.log('[AdminLTE] Sidebar element found:', $('.main-sidebar').length);
+      console.log('[AdminLTE] Navbar element found:', $('.main-header').length);
+      
+      // Trigger pushmenu initialization
+      if (typeof $.AdminLTE !== 'undefined' && typeof $.AdminLTE.pushMenu !== 'undefined') {
+        $.AdminLTE.pushMenu.activate();
+        console.log('[AdminLTE] Push menu activated');
+      }
+      
+      return true;
     } catch (error) {
-      console.error('[AdminLTE] Layout initialization failed:', error);
+      console.error('[AdminLTE] Layout initialization error:', error.message);
+      console.error('[AdminLTE] Error details:', error);
+      return false;
     }
-  });
+  }
+  
+  // Try initialization on document ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('[AdminLTE] DOMContentLoaded event fired');
+      setTimeout(initializeAdminLTE, 100);
+    });
+  } else {
+    // DOM already loaded
+    console.log('[AdminLTE] DOM already loaded, initializing now');
+    setTimeout(initializeAdminLTE, 100);
+  }
+  
+  // Fallback: retry after a delay
+  setTimeout(function() {
+    if (typeof jQuery !== 'undefined') {
+      var $ = jQuery;
+      var hasLayout = typeof $.fn.layout === 'function';
+      var bodyHasLayout = $('body').data('layout') || $('body').data('lte.layout');
+      
+      console.log('[AdminLTE] Health check - Layout function exists:', hasLayout);
+      console.log('[AdminLTE] Health check - Body has layout data:', !!bodyHasLayout);
+      
+      if (!bodyHasLayout && hasLayout) {
+        console.log('[AdminLTE] Running fallback initialization...');
+        initializeAdminLTE();
+      }
+    }
+  }, 500);
 </script>
 
 <!-- ================= SKELETON HANDLER ================= -->
