@@ -32,7 +32,7 @@ class Config:
             "mysql://", "mysql+pymysql://"
         )
     else:
-        SQLALCHEMY_DATABASE_URI = "mysql+pymysql://petsona_user:StrongPassword123!@localhost/petsona_db"
+        SQLALCHEMY_DATABASE_URI = "mysql+pymysql://petsona_user:Petsona-0717@localhost/petsona_db"
 
     # =========================
     # MAIL
