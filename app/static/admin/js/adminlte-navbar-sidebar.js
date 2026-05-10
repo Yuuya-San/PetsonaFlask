@@ -21,22 +21,6 @@
             console.warn('AdminLTE layout initialization failed:', error);
         }
 
-        function syncSidebarState() {
-            if (window.innerWidth >= 1024) {
-                $('body').addClass('sidebar-collapse').removeClass('sidebar-open');
-            } else {
-                $('body').removeClass('sidebar-collapse sidebar-open');
-            }
-        }
-
-        syncSidebarState();
-
-        var resizeTimeout;
-        $(window).off('resize.petsonaSidebar').on('resize.petsonaSidebar', function() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(syncSidebarState, 180);
-        });
-
         $('[data-toggle="dropdown"]').attr('aria-haspopup', 'true').attr('aria-expanded', 'false');
 
         $(document)
