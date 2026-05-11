@@ -1,320 +1,599 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<!-- Professional Glassmorphism Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container-fluid">
+    <!-- Burger Button - Only visible on <1024px -->
+    <button class="navbar-toggler d-lg-none border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" aria-label="Toggle navigation">
+      <div class="hamburger-menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
+    </button>
 
-    <!-- Mobile-first viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#343a40">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Spacer for centering -->
+    <div class="flex-grow-1"></div>
 
-    <title>PetSona</title>
+    <!-- Right-aligned content -->
+    <div class="navbar-nav-right d-flex align-items-center">
+      <!-- Notifications Dropdown -->
+      <div class="dropdown me-3">
+        <button class="nav-btn position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-tooltip="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="badge notification-badge d-none" id="notification-badge"></span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end notifications-dropdown">
+          <div class="dropdown-header-custom">
+            <h6 class="mb-0">Notifications</h6>
+            <a href="javascript:markAllNotificationsAsRead();" class="mark-read-link">Mark all as read</a>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="notifications-scroll-container">
+            <div class="text-center text-muted py-4">
+              <i class="fas fa-bell mb-2"></i>
+              <div>Loading notifications...</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <link rel="icon" href="{{ url_for('static', filename='images/logo/petsona-fav-icon.png') }}">
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-
-    <!-- Custom -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin/custom.css') }}?v=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='shared/loader.css') }}?v=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/compatibility-scores.css') }}?v=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}?v=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash-messages.css') }}?v=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}?v=1.0">
-
-    <!-- Alpine -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <style>
-    [x-cloak] { display: none !important; }
-    
-    /* Hide scrollbars */
-    ::-webkit-scrollbar {
-      width: 0;
-    }
-    * {
-      scrollbar-width: none;
-    }
-
-    /* Main Content Layout */
-    .admin-main-content {
-        margin-top: 70px;
-        min-height: calc(100vh - 70px);
-        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .content-wrapper {
-        padding: 20px;
-    }
-
-    @media (min-width: 1024px) {
-        .admin-main-content {
-            margin-left: 70px;
-            min-width: 420px;
-            max-height: 85vh;
-            height: 85vh;
-        }
-
-        .sidebar-wrapper:hover ~ .admin-main-content {
-            margin-left: 280px;
-        }
-    }
-
-    @media (max-width: 1023px) {
-        .admin-main-content {
-            width: 100vw;
-            height: calc(100vh - 70px);
-            min-width: 100vw;
-            max-width: 100vw;
-            min-height: calc(100vh - 70px);
-            max-height: calc(100vh - 70px);
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .modal .modal-dialog {
-            min-width: 420px;
-            max-height: 85vh;
-            height: 85vh;
-        }
-        .dropdown-menu {
-            min-width: 420px;
-            max-height: 85vh;
-        }
-    }
-
-    @media (max-width: 1023px) {
-        .modal .modal-dialog {
-            width: 100vw;
-            height: calc(100vh - 70px);
-            min-width: 100vw;
-            max-width: 100vw;
-            min-height: calc(100vh - 70px);
-            max-height: calc(100vh - 70px);
-        }
-        .dropdown-menu {
-            width: 100vw;
-            min-width: 100vw;
-            max-width: 100vw;
-            max-height: calc(100vh - 70px);
-        }
-    }
-    </style>
-
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-..."
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
-
-    {% block styles %}{% endblock %}
-</head>
-
-<body class="bg-light">
-<!-- Include Sidebar -->
-{% include 'admin/partials/sidebar.html' %}
-
-<!-- Include Navbar -->
-{% include 'admin/partials/navbar.html' %}
-
-<!-- Main Content Wrapper -->
-<div class="admin-main-content">
-    <!-- Content Wrapper -->
-    <div class="content-wrapper">
-
-                    <!-- ================= FLASH ================= -->
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            <div class="flash-container">
-                                {% for category, message in messages %}
-                                    <div class="flash flash-{{ category }}" data-dismiss-time="6400">
-                                        <div class="flash-icon">
-                                            {% if category == 'success' %}
-                                                <i class="fas fa-check-circle"></i>
-                                            {% elif category == 'danger' %}
-                                                <i class="fas fa-times-circle"></i>
-                                            {% elif category == 'warning' %}
-                                                <i class="fas fa-exclamation-triangle"></i>
-                                            {% else %}
-                                                <i class="fas fa-info-circle"></i>
-                                            {% endif %}
-                                        </div>
-                                        <div class="flash-content">{{ message }}</div>
-                                        <button class="flash-close" aria-label="Close notification">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                {% endfor %}
-                            </div>
+      <!-- Messages Dropdown -->
+      {% if current_user.is_authenticated %}
+      <div class="dropdown me-3">
+        <button class="nav-btn position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-tooltip="Messages">
+          <i class="fa-regular fa-message"></i>
+          <span class="badge message-badge" id="unread-msg-badge">{{ unread_badge_count if unread_badge_count > 0 else '' }}</span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end messages-dropdown">
+          <div class="dropdown-header-custom">
+            <h6 class="mb-0">Recent Conversations</h6>
+          </div>
+          <div class="dropdown-divider"></div>
+          {% if recent_conversations %}
+            <div class="messages-scroll-container">
+              {% for conv in recent_conversations %}
+                {% set other_user = conv.get_other_user(current_user.id) %}
+                {% set unread_count = conv.get_unread_count(current_user.id) %}
+                <a href="{{ url_for('messages.conversation', conversation_id=conv.id) }}" class="dropdown-item-custom {% if unread_count > 0 %}unread{% endif %}">
+                  <div class="d-flex align-items-center">
+                    {% if other_user.photo_url %}
+                      <img src="{{ url_for('static', filename=other_user.photo_url) }}" alt="{{ other_user.first_name }}" class="user-avatar">
+                    {% else %}
+                      <div class="user-avatar-placeholder">{{ other_user.first_name[0] }}</div>
+                    {% endif %}
+                    <div class="message-info">
+                      <div class="user-name">{{ other_user.first_name }} {{ other_user.last_name }}</div>
+                      <div class="message-preview">
+                        {% if unread_count > 0 %}
+                          <span class="unread-indicator">New message</span>
+                        {% else %}
+                          <span class="no-message">No message yet</span>
                         {% endif %}
-                    {% endwith %}
-
-                        {% block content %}{% endblock %}
+                      </div>
                     </div>
-                </div>
+                    {% if unread_count > 0 %}
+                      <span class="unread-count">{{ unread_count if unread_count < 10 else '9+' }}</span>
+                    {% endif %}
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="text-center text-muted py-4">
+              <i class="fas fa-inbox mb-2"></i>
+              <div>No conversations yet</div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
 
-<!-- ================= MODAL SAFETY ================= -->
-<script>
-  // Ensure all modals are hidden on page load
-  document.addEventListener('DOMContentLoaded', function() {
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-      modal.style.display = 'none';
-      modal.classList.remove('show');
-      modal.setAttribute('aria-hidden', 'true');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) backdrop.remove();
-    });
-    document.body.classList.remove('modal-open');
-  });
-</script>
+      <!-- User Profile Dropdown -->
+      {% if current_user.is_authenticated %}
+      <div class="dropdown">
+        <button class="user-profile-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
+               alt="User Avatar" class="user-avatar-small">
+          <span class="user-name">{{ current_user.first_name or 'User' }}</span>
+          <i class="fas fa-chevron-down ms-2"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end user-dropdown">
+          <div class="user-info-section">
+            <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
+                 alt="User Avatar" class="user-avatar-large">
+            <div class="user-details">
+              <div class="user-full-name">{{ current_user.first_name or 'User' }} {{ current_user.last_name or '' }}</div>
+              <div class="user-email">{{ current_user.email or 'No email' }}</div>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a href="{{ url_for('profile.profile') }}" class="dropdown-item-custom">
+            <i class="fas fa-user"></i>
+            <span>My Profile</span>
+          </a>
+          {% if current_user.registration_method == 'system' %}
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-header-custom">
+            <h6 class="mb-0">Settings</h6>
+          </div>
+          <a href="#" class="dropdown-item-custom" data-bs-toggle="modal" data-bs-target="#settingsAccountModal">
+            <i class="fas fa-lock"></i>
+            <span>Password & Security</span>
+          </a>
+          <a href="#" class="dropdown-item-custom" onclick="openTwoFactorModal(); return false;">
+            <i class="fas fa-shield-alt"></i>
+            <span>Two-Factor Authentication</span>
+          </a>
+          {% endif %}
+          <div class="dropdown-divider"></div>
+          <a href="{{ url_for('auth.logout') }}" class="dropdown-item-custom logout-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</nav>
 
-<!-- ================= MODALS ================= -->
-{% include 'partials/notification-modal.html' %}
+<!-- Professional Glassmorphism Navbar Styles -->
+<style>
+  /* ================= NAVBAR CONTAINER ================= */
+  .navbar-custom {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(140, 0, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(140, 0, 255, 0.08);
+    padding: 12px 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-<!-- ================= JS: CRITICAL DEPENDENCIES ================= -->
-<!-- 1. jQuery (Required by some plugins) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJ+Y3oAKiH6jyCmMJk3Hr6zvN3O82ijvs0yvc=" crossorigin="anonymous"></script>
+  /* ================= HAMBURGER MENU ================= */
+  .hamburger-menu {
+    width: 24px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+  }
 
-<!-- 2. Bootstrap 5 JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  .hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    border-radius: 2px;
+    position: absolute;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-<!-- 3. PetSona UI Controller (Bootstrap 5 Compatible) -->
-<script src="{{ url_for('static', filename='shared/petsona-ui-fallback.js') }}?v=1.0"></script>
+  .hamburger-line:nth-child(1) { top: 0; }
+  .hamburger-line:nth-child(2) { top: 50%; transform: translateY(-50%); }
+  .hamburger-line:nth-child(3) { bottom: 0; }
 
-<!-- 4. Socket.IO Configuration -->
-<script>
-  // Configure Socket.IO URL based on environment
-  window.socketConfig = {
-    url: window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://petsona.online',
-    options: {
-      reconnection: true,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      reconnectionAttempts: 5,
-      transports: ['websocket', 'polling'],
-      upgrade: true
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  .navbar-toggler:hover .hamburger-line {
+    background: linear-gradient(135deg, #7a00d9 0%, #9333ea 100%);
+  }
+
+  /* ================= NAVIGATION BUTTONS ================= */
+  .navbar-nav-right {
+    gap: 8px;
+  }
+
+  .nav-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(140, 0, 255, 0.2);
+    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8C00FF;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+  }
+
+  .nav-btn:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    border-color: rgba(140, 0, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(140, 0, 255, 0.15);
+  }
+
+  .nav-btn i {
+    font-size: 18px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-btn:hover i {
+    transform: scale(1.1);
+  }
+
+  /* ================= BADGES ================= */
+  .notification-badge,
+  .message-badge {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+  }
+
+  /* ================= USER PROFILE BUTTON ================= */
+  .user-profile-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(140, 0, 255, 0.2);
+    border-radius: 12px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    color: #8C00FF;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    gap: 8px;
+  }
+
+  .user-profile-btn:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    border-color: rgba(140, 0, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(140, 0, 255, 0.15);
+  }
+
+  .user-avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid rgba(140, 0, 255, 0.2);
+  }
+
+  .user-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #8C00FF;
+  }
+
+  /* ================= DROPDOWN MENUS ================= */
+  .notifications-dropdown,
+  .messages-dropdown,
+  .user-dropdown {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(140, 0, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(140, 0, 255, 0.15);
+    margin-top: 12px;
+    min-width: 320px;
+    max-width: 400px;
+  }
+
+  .dropdown-header-custom {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(140, 0, 255, 0.1);
+  }
+
+  .dropdown-header-custom h6 {
+    color: #8C00FF;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .mark-read-link {
+    color: #a855f7;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .mark-read-link:hover {
+    color: #7a00d9;
+    text-decoration: underline;
+  }
+
+  /* ================= DROPDOWN ITEMS ================= */
+  .dropdown-item-custom {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #6c757d;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 4px 8px;
+  }
+
+  .dropdown-item-custom:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    color: #8C00FF;
+    transform: translateX(4px);
+  }
+
+  .dropdown-item-custom i {
+    width: 16px;
+    color: #adb5bd;
+    transition: all 0.3s ease;
+  }
+
+  .dropdown-item-custom:hover i {
+    color: #8C00FF;
+    transform: scale(1.1);
+  }
+
+  .logout-item {
+    color: #dc3545;
+  }
+
+  .logout-item:hover {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+
+  /* ================= USER INFO SECTION ================= */
+  .user-info-section {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .user-avatar-large {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid rgba(140, 0, 255, 0.2);
+  }
+
+  .user-details {
+    flex: 1;
+  }
+
+  .user-full-name {
+    font-weight: 600;
+    color: #8C00FF;
+    margin-bottom: 2px;
+  }
+
+  .user-email {
+    font-size: 12px;
+    color: #6c757d;
+  }
+
+  /* ================= MESSAGES STYLES ================= */
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid rgba(140, 0, 255, 0.2);
+  }
+
+  .user-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .message-info {
+    flex: 1;
+  }
+
+  .user-name {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 2px;
+  }
+
+  .message-preview {
+    font-size: 12px;
+  }
+
+  .unread-indicator {
+    color: #8C00FF;
+    font-weight: 500;
+  }
+
+  .no-message {
+    color: #6c757d;
+  }
+
+  .unread-count {
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 12px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* ================= SCROLL CONTAINERS ================= */
+  .notifications-scroll-container,
+  .messages-scroll-container {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .notifications-scroll-container::-webkit-scrollbar,
+  .messages-scroll-container::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .notifications-scroll-container::-webkit-scrollbar-track,
+  .messages-scroll-container::-webkit-scrollbar-track {
+    background: rgba(140, 0, 255, 0.1);
+    border-radius: 2px;
+  }
+
+  .notifications-scroll-container::-webkit-scrollbar-thumb,
+  .messages-scroll-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .notifications-scroll-container::-webkit-scrollbar-thumb:hover,
+  .messages-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #7a00d9 0%, #9333ea 100%);
+  }
+
+  /* ================= RESPONSIVE DESIGN ================= */
+  @media (max-width: 1023px) {
+    .navbar-custom {
+      left: 0 !important;
     }
-  };
-</script>
-<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
-<!-- 5. Custom Application Scripts -->
-<script src="{{ url_for('static', filename='shared/loader.js') }}?v=1.0"></script>
-<script src="{{ url_for('static', filename='js/navbar-socket.js') }}?v=1.0"></script>
-<script src="{{ url_for('static', filename='js/navbar-notifications.js') }}?v=1.0"></script>
-<script src="{{ url_for('static', filename='js/socket-manager.js') }}?v=1.0"></script>
-
-<!-- ================= BOOTSTRAP 5 INITIALIZATION ================= -->
-<script>
-  // Bootstrap 5 UI initialization
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('[Bootstrap 5] Initializing...');
-
-    // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-
-    // Initialize popovers
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-      return new bootstrap.Popover(popoverTriggerEl);
-    });
-
-    console.log('[Bootstrap 5] Initialized successfully');
-  });
-</script>
-
-<!-- ================= SKELETON HANDLER ================= -->
-<script>
-window.addEventListener('load', () => {
-    const skeleton = document.getElementById('skeleton-wrapper');
-    const content = document.getElementById('page-content');
-
-    if (skeleton) skeleton.remove();
-    if (content) {
-        content.classList.remove('d-none');
-        // Small delay for smooth transition
-        setTimeout(() => content.classList.add('visible'), 50);
+    .notifications-dropdown,
+    .messages-dropdown,
+    .user-dropdown {
+      min-width: 280px;
+      max-width: 320px;
     }
-});
-</script>
+  }
 
-<!-- ================= FLASH AUTO DISMISS WITH COUNTDOWN ================= -->
-<script>
-document.querySelectorAll('.flash').forEach(flash => {
-    const dismissTime = parseInt(flash.dataset.dismissTime || '6400');
-    let startTime = Date.now();
-    let frameId = null;
-
-    // Remove flash with smooth animation
-    const removeFlash = () => {
-        flash.style.animation = 'flashSlideOut 0.5s ease-in forwards';
-        setTimeout(() => flash.remove(), 500);
-    };
-
-    // Handle close button click
-    flash.querySelector('.flash-close')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (frameId) cancelAnimationFrame(frameId);
-        removeFlash();
-    });
-
-    // Auto dismiss after dismiss time
-    const autoTimeout = setTimeout(removeFlash, dismissTime);
-
-    // Pause on hover
-    flash.addEventListener('mouseenter', () => {
-        if (frameId) cancelAnimationFrame(frameId);
-        clearTimeout(autoTimeout);
-        flash.style.animationPlayState = 'paused';
-    });
-
-    flash.addEventListener('mouseleave', () => {
-        flash.style.animationPlayState = 'running';
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const body = document.body;
-
-    function enforceCollapsedSmooth() {
-        if (window.innerWidth >= 992) {
-
-            // Add a temporary transition class
-            body.classList.add("hold-transition");
-
-            body.classList.remove("sidebar-open");
-            body.classList.add("sidebar-collapse");
-
-            // Remove transition helper after animation finishes
-            setTimeout(() => {
-                body.classList.remove("hold-transition");
-            }, 400);
-        }
+  @media (min-width: 1024px) {
+    .navbar-custom {
+      left: 70px;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    // Run after AdminLTE resize logic
-    window.addEventListener("resize", function () {
-        setTimeout(enforceCollapsedSmooth, 150);
-    });
+    .sidebar-wrapper:hover ~ .navbar-custom {
+      left: 280px;
+    }
+  }
 
-});
+  @media (max-width: 576px) {
+    .user-name {
+      display: none;
+    }
 
-</script>
+    .notifications-dropdown,
+    .messages-dropdown,
+    .user-dropdown {
+      min-width: 280px;
+      max-width: 300px;
+    }
+  }
 
-{% block scripts %}{% endblock %}
-</body>
-</html>
+  /* ================= TOOLTIPS ================= */
+  .nav-btn[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeInTooltipNav 0.3s ease forwards;
+  }
+
+  @keyframes fadeInTooltipNav {
+    to {
+      opacity: 1;
+      bottom: -45px;
+    }
+  }
+
+  .dropdown-menu.notifications-dropdown,
+  .dropdown-menu.messages-dropdown,
+  .dropdown-menu.user-dropdown {
+    min-width: 280px;
+    max-width: 420px;
+    min-height: 240px;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .modal .modal-dialog {
+    min-width: 320px;
+    max-width: 420px;
+    min-height: 220px;
+    max-height: 85vh;
+    margin: 1.5rem auto;
+  }
+
+  .modal .modal-content {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  /* ================= FULL-SCREEN MODALS FOR SMALL DEVICES ================= */
+  @media (max-width: 768px) {
+    .dropdown-menu.notifications-dropdown,
+    .dropdown-menu.messages-dropdown,
+    .dropdown-menu.user-dropdown,
+    .modal .modal-dialog {
+      position: fixed !important;
+      top: 70px !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: calc(100vh - 70px) !important;
+      max-width: 100vw !important;
+      max-height: calc(100vh - 70px) !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      z-index: 1050 !important;
+      overflow-y: auto !important;
+      margin: 0 !important;
+    }
+
+    .dropdown-menu.notifications-dropdown .dropdown-header-custom,
+    .dropdown-menu.messages-dropdown .dropdown-header-custom,
+    .dropdown-menu.user-dropdown .user-info-section {
+      padding: 20px !important;
+      border-bottom: 1px solid rgba(140, 0, 255, 0.1) !important;
+    }
+
+    .dropdown-menu.notifications-dropdown .notifications-scroll-container,
+    .dropdown-menu.messages-dropdown .messages-scroll-container,
+    .dropdown-menu.user-dropdown .dropdown-item-custom {
+      padding: 20px !important;
+    }
+  }
+</style>

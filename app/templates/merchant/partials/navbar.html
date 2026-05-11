@@ -533,11 +533,37 @@
       opacity: 1;
       bottom: -45px;
     }
+  }
+
+  .dropdown-menu.notifications-dropdown,
+  .dropdown-menu.messages-dropdown,
+  .dropdown-menu.user-dropdown {
+    min-width: 280px;
+    max-width: 420px;
+    min-height: 240px;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .modal .modal-dialog {
+    min-width: 320px;
+    max-width: 420px;
+    min-height: 220px;
+    max-height: 85vh;
+    margin: 1.5rem auto;
+  }
+
+  .modal .modal-content {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
   /* ================= FULL-SCREEN MODALS FOR SMALL DEVICES ================= */
   @media (max-width: 768px) {
     .dropdown-menu.notifications-dropdown,
     .dropdown-menu.messages-dropdown,
-    .dropdown-menu.user-dropdown {
+    .dropdown-menu.user-dropdown,
+    .modal .modal-dialog {
       position: fixed !important;
       top: 70px !important;
       left: 0 !important;
@@ -559,7 +585,7 @@
 
     .dropdown-menu.notifications-dropdown .dropdown-header-custom,
     .dropdown-menu.messages-dropdown .dropdown-header-custom,
-    .dropdown-menu.user-dropdown .user-info {
+    .dropdown-menu.user-dropdown .user-info-section {
       padding: 20px !important;
       border-bottom: 1px solid rgba(140, 0, 255, 0.1) !important;
     }

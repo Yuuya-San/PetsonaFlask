@@ -209,6 +209,23 @@
   <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 
   <!-- Socket.IO for Real-Time Updates -->
+  <script>
+    window.socketConfig = {
+      url: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '')
+           ? window.location.protocol + '//' + window.location.host
+           : 'https://petsona.online',
+      options: {
+        path: '/socket.io',
+        transports: ['websocket', 'polling'],
+        upgrade: true,
+        secure: true,
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 5
+      }
+    };
+  </script>
   <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
   <script src="{{ url_for('static', filename='js/socket-manager.js') }}"></script>
 

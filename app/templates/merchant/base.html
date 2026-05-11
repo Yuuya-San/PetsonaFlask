@@ -164,14 +164,18 @@
 <script>
   // Configure Socket.IO URL based on environment
   window.socketConfig = {
-    url: window.location.protocol + '//' + window.location.host,
+    url: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '')
+         ? window.location.protocol + '//' + window.location.host
+         : 'https://petsona.online',
     options: {
+      path: '/socket.io',
+      transports: ['websocket', 'polling'],
+      upgrade: true,
+      secure: true,
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
-      reconnectionAttempts: 5,
-      transports: ['websocket', 'polling'],
-      upgrade: true
+      reconnectionAttempts: 5
     }
   };
 </script>
