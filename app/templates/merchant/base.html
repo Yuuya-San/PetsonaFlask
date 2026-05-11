@@ -160,7 +160,21 @@
 <!-- 3. PetSona UI Controller (Bootstrap 5 Compatible) -->
 <script src="{{ url_for('static', filename='shared/petsona-ui-fallback.js') }}?v=1.0"></script>
 
-<!-- 4. Socket.IO for Real-time Updates -->
+<!-- 4. Socket.IO Configuration -->
+<script>
+  // Configure Socket.IO URL based on environment
+  window.socketConfig = {
+    url: window.location.protocol + '//' + window.location.host,
+    options: {
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: 5,
+      transports: ['websocket', 'polling'],
+      upgrade: true
+    }
+  };
+</script>
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
 <!-- 5. Custom Application Scripts -->

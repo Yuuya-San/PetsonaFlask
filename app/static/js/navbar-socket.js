@@ -25,12 +25,7 @@ class NavbarSocketManager {
       if (window.navbarSocket) {
         this.socket = window.navbarSocket;
       } else {
-        this.socket = io({
-          reconnection: true,
-          reconnectionDelay: 1000,
-          reconnectionDelayMax: 5000,
-          reconnectionAttempts: 5
-        });
+        this.socket = io(window.socketConfig.url, window.socketConfig.options);
         window.navbarSocket = this.socket;
       }
 
@@ -38,8 +33,27 @@ class NavbarSocketManager {
       this.initializeMessageItems();
       this.initialized = true;
     } catch (error) {
+      console.log('[NavbarSocket] Initialization error:', error);
     }
   }
+
+  /**
+   * Setup Socket.IO event handlers
+   */
+  setupEventHandlers() {
+    if (!this.socket) return;
+
+    this.socket.on('connect', () => {
+      console.log('[NavbarSocket] 🔗 Connected');
+    });
+
+    this.socket.on('disconnect', (reason) => {
+      console.log('[NavbarSocket] ❌ Disconnected:', reason);
+    });
+
+    this.socket.on('connect_error', (error) => {
+      console.log('[NavbarSocket] ❌ Connection error:', error.message);
+    });
 
   /**
    * Initialize message items with data attributes for tracking

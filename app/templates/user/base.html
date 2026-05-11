@@ -54,19 +54,17 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body class="bg-gradient-to-br from-white via-purple-50 to-white">
-<div class="container-fluid p-0">
-    <div class="row g-0">
-        <!-- Sidebar -->
-        {% include 'user/partials/sidebar.html' %}
+<body class="bg-light">
+<!-- Include Sidebar -->
+{% include 'user/partials/sidebar.html' %}
 
-        <!-- Main Content -->
-        <div class="main-content-wrapper">
-            <!-- Navbar -->
-            {% include 'user/partials/navbar.html' %}
+<!-- Include Navbar -->
+{% include 'user/partials/navbar.html' %}
 
-            <!-- Content Wrapper -->
-            <div class="content-wrapper">
+<!-- Main Content Wrapper -->
+<div class="main-content">
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
 
                     <!-- ================= FLASH ================= -->
                     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -101,31 +99,28 @@
             </div>
         </div>
     </div>
-</div>
 
-<!-- Layout Styles -->
-<style>
-  .main-content-wrapper {
-    margin-left: 0;
-    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .content-wrapper {
-    padding-top: 80px;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  }
-
-  @media (min-width: 1024px) {
-    .main-content-wrapper {
-      margin-left: 70px;
+    /* Main Content Layout */
+    .main-content {
+        margin-top: 70px;
+        min-height: calc(100vh - 70px);
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .sidebar-wrapper:hover ~ .main-content-wrapper {
-      margin-left: 280px;
+    .content-wrapper {
+        padding: 20px;
     }
-  }
-</style>
+
+    @media (min-width: 1024px) {
+        .main-content {
+            margin-left: 70px;
+        }
+
+        .sidebar-wrapper:hover ~ .main-content {
+            margin-left: 280px;
+        }
+    }
+    </style>
 
 <!-- ================= MODAL SAFETY ================= -->
 <script>
@@ -156,7 +151,21 @@
 <!-- 3. PetSona UI Controller (Bootstrap 5 Compatible) -->
 <script src="{{ url_for('static', filename='shared/petsona-ui-fallback.js') }}?v=1.0"></script>
 
-<!-- 4. Socket.IO for Real-time Updates -->
+<!-- 4. Socket.IO Configuration -->
+<script>
+  // Configure Socket.IO URL based on environment
+  window.socketConfig = {
+    url: window.location.protocol + '//' + window.location.host,
+    options: {
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: 5,
+      transports: ['websocket', 'polling'],
+      upgrade: true
+    }
+  };
+</script>
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
 <!-- 5. Custom Application Scripts -->

@@ -38,14 +38,7 @@ class SocketManager {
         this.connected = true;
       } else if (!window.sharedSocket) {
         // Create shared socket instance for all modules
-        window.sharedSocket = io({
-          reconnection: true,
-          reconnectionDelay: 500,
-          reconnectionDelayMax: 2000,
-          reconnectionAttempts: this.maxReconnectAttempts,
-          transports: ['websocket', 'polling'],
-          upgrade: true,
-        });
+        window.sharedSocket = io(window.socketConfig.url, window.socketConfig.options);
         this.socket = window.sharedSocket;
       } else {
         this.socket = window.sharedSocket;
@@ -66,25 +59,41 @@ class SocketManager {
     this.socket.on('connect', () => {
       this.connected = true;
       this.reconnectAttempts = 0;
-      this.log('🔗 Socket.IO connected:', this.socket.id);
-      
-      // Re-register watchers after reconnection
-      this.rewatchAllSpecies();
-      this.rewatchAllBreeds();
-      
-      // Notify listeners that socket is ready
-      window.dispatchEvent(new CustomEvent('socket-ready', { detail: this.socket }));
+      console.log('[SocketManager] 🔗 Connected to:', window.socketConfig.url);
     });
 
     // Connection lost
-    this.socket.on('disconnect', () => {
+    this.socket.on('disconnect', (reason) => {
       this.connected = false;
-      this.log('❌ Socket.IO disconnected');
+      console.log('[SocketManager] ❌ Disconnected:', reason);
     });
 
-    // Server sent error
-    this.socket.on('error', (error) => {
-      this.log('❌ Socket.IO error:', error);
+    // Connection error
+    this.socket.on('connect_error', (error) => {
+      this.connected = false;
+      console.log('[SocketManager] ❌ Connection error:', error.message);
+      // Don't retry if it's a server issue
+      if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+        console.log('[SocketManager] Max reconnection attempts reached, giving up');
+      }
+    });
+
+    // Reconnection attempts
+    this.socket.on('reconnect_attempt', (attempt) => {
+      this.reconnectAttempts = attempt;
+      console.log('[SocketManager] 🔄 Reconnection attempt:', attempt);
+    });
+
+    // Reconnected
+    this.socket.on('reconnect', (attempt) => {
+      this.connected = true;
+      console.log('[SocketManager] ✅ Reconnected after', attempt, 'attempts');
+    });
+
+    // Reconnection failed
+    this.socket.on('reconnect_failed', () => {
+      console.log('[SocketManager] ❌ Reconnection failed permanently');
+    });
     });
 
     // Connection response
