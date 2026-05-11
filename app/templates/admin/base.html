@@ -49,7 +49,7 @@
         transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         width: min(95vw, calc(100vw - 70px));
         max-width: min(95vw, calc(100vw - 70px));
-        min-width: 90vw;
+        min-width: 95vw;
         box-sizing: border-box;
         margin-left: 70px;
     }
@@ -81,7 +81,7 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body class="bg-light">
+<body>
 <!-- Include Sidebar -->
 {% include 'admin/partials/sidebar.html' %}
 
@@ -151,6 +151,8 @@
 
 <!-- ================= MODALS ================= -->
 {% include 'partials/notification-modal.html' %}
+{% include 'partials/settings-account-modal.html' %}
+{% include 'partials/settings-2fa-modal.html' %}
 
 <!-- ================= JS: CRITICAL DEPENDENCIES ================= -->
 <!-- 1. jQuery (Required by some plugins) -->
@@ -237,8 +239,11 @@ document.querySelectorAll('.flash').forEach(flash => {
         e.preventDefault();
         e.stopPropagation();
         if (frameId) cancelAnimationFrame(frameId);
-    <!-- ================= BOOTSTRAP 5 INITIALIZATION ================= -->
-<script>
+    });
+});
+
+<!-- ================= BOOTSTRAP 5 INITIALIZATION ================= -->
+
   // Bootstrap 5 UI initialization
   document.addEventListener('DOMContentLoaded', function() {
     console.log('[Bootstrap 5] Initializing...');
@@ -262,6 +267,5 @@ document.querySelectorAll('.flash').forEach(flash => {
 <!-- Settings Modal Functionality -->
 <script src="{{ url_for('static', filename='admin/js/settings-modal.js') }}?v=1.0"></script>
 
-{% block scripts %}{% endblock %}
 </body>
 </html>
