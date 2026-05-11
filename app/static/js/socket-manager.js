@@ -94,7 +94,6 @@ class SocketManager {
     this.socket.on('reconnect_failed', () => {
       console.log('[SocketManager] ❌ Reconnection failed permanently');
     });
-    });
 
     // Connection response
     this.socket.on('connection_response', (data) => {

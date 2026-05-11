@@ -54,6 +54,7 @@ class NavbarSocketManager {
     this.socket.on('connect_error', (error) => {
       console.log('[NavbarSocket] ❌ Connection error:', error.message);
     });
+  }
 
   /**
    * Initialize message items with data attributes for tracking

@@ -160,9 +160,6 @@
                         {% block content %}{% endblock %}
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
 <!-- ================= MODAL SAFETY ================= -->
 <script>
@@ -197,7 +194,7 @@
 <script>
   // Configure Socket.IO URL based on environment
   window.socketConfig = {
-    url: window.location.protocol + '//' + window.location.host,
+    url: window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://petsona.online',
     options: {
       reconnection: true,
       reconnectionDelay: 1000,
