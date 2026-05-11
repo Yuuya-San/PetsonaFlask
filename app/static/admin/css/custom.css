@@ -1,6 +1,20 @@
 /* ===============================
-   ADMINLTE SIDEBAR TOGGLE FIX
+   ADMINLTE SIDEBAR TOGGLE FIX - DEPLOYMENT SAFE
 ================================ */
+/* Force positioning regardless of framework conflicts */
+.main-sidebar {
+    position: fixed !important;
+    top: 56px !important;
+    z-index: 1000 !important;
+    height: calc(100vh - 56px) !important;
+    overflow-y: auto !important;
+}
+
+/* Prevent unwanted visibility */
+.main-sidebar:not(.sidebar-open) {
+    transform: translateX(-100%) !important;
+}
+
 body.sidebar-open .main-sidebar {
     transform: translateX(0) !important;
     left: 0 !important;
@@ -15,7 +29,7 @@ body.sidebar-collapse .main-sidebar {
         transform: translateX(0) !important;
         left: -250px !important;
     }
-    
+
     body.sidebar-open .main-sidebar {
         transform: translateX(0) !important;
         left: 0 !important;

@@ -15,20 +15,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- AdminLTE -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin/plugins/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/plugins/fontawesome-free/css/all.min.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/dist/css/adminlte.min.css') }}?v=1.0">
 
     <!-- Custom -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/custom.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/user_form.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/all_user.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/audit_logs.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='shared/loader.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='pet/css/species.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/compatibility-scores.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash-messages.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/custom.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/user_form.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/all_user.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/audit_logs.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='shared/loader.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pet/css/species.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/compatibility-scores.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash-messages.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}?v=1.0">
 
     <!-- Alpine -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -105,6 +105,22 @@
     </div>
 </div>
 
+<!-- ================= MODAL SAFETY ================= -->
+<script>
+  // Ensure all modals are hidden on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+      modal.style.display = 'none';
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) backdrop.remove();
+    });
+    document.body.classList.remove('modal-open');
+  });
+</script>
+
 <!-- ================= MODALS ================= -->
 {% include 'partials/notification-modal.html' %}
 
@@ -130,10 +146,13 @@
 <!-- 3. AdminLTE Application Script -->
 <script src="{{ url_for('static', filename='admin/dist/js/adminlte.min.js') }}?v=3.2.0"></script>
 
-<!-- 4. Socket.IO for Real-time Updates -->
+<!-- 4. PetSona UI Fallback Controller (Deployment-Safe) -->
+<script src="{{ url_for('static', filename='shared/petsona-ui-fallback.js') }}?v=1.0"></script>
+
+<!-- 5. Socket.IO for Real-time Updates -->
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
-<!-- 5. Custom Application Scripts -->
+<!-- 6. Custom Application Scripts -->
 <script src="{{ url_for('static', filename='shared/adminlte-init.js') }}?v=1.0"></script>
 <script src="{{ url_for('static', filename='shared/loader.js') }}?v=1.0"></script>
 <script src="{{ url_for('static', filename='admin/js/user_form.js') }}?v=1.0"></script>

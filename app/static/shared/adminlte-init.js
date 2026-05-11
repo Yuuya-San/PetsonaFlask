@@ -1,6 +1,6 @@
 /**
  * AdminLTE Initialization and Sidebar Management
- * Ensures sidebar toggle and layout work correctly in production
+ * Enhanced with deployment-safe fallbacks
  */
 
 (function() {
@@ -40,7 +40,8 @@
           console.log('[AdminLTE] Retrying initialization (' + this.retryCount + '/' + this.maxRetries + ')');
           setTimeout(() => this.init(), 200);
         } else {
-          console.error('[AdminLTE] Failed to initialize after ' + this.maxRetries + ' retries');
+          console.error('[AdminLTE] Failed to initialize after ' + this.maxRetries + ' retries - falling back to PetSonaUI');
+          // Fallback is already loaded and initialized
         }
         return;
       }
@@ -52,7 +53,7 @@
         $('body').layout();
         console.log('[AdminLTE] Layout initialized successfully');
         
-        // Setup manual pushmenu handling as fallback
+        // Setup pushmenu
         this.setupPushmenu($);
         
         this.initialized = true;
@@ -60,6 +61,9 @@
         
       } catch (error) {
         console.error('[AdminLTE] Initialization error:', error);
+        if (typeof window.petsonaUIError !== 'undefined') {
+          window.petsonaUIError('AdminLTE', 'Initialization failed', error);
+        }
         if (this.retryCount < this.maxRetries) {
           this.retryCount++;
           setTimeout(() => this.init(), 300);
@@ -68,7 +72,7 @@
     },
     
     /**
-     * Setup manual pushmenu handling
+     * Setup pushmenu handling
      */
     setupPushmenu: function($) {
       // Get all pushmenu toggle buttons
