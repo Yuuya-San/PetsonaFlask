@@ -109,8 +109,9 @@
         inset 0 1px 0 rgba(255,255,255,.4),
         0 8px 32px rgba(139,92,246,.08);
       margin: 1rem auto;
-      width: 100%;
-      max-width: 100%;
+      width: min(95vw, calc(100vw - 70px));
+      max-width: min(95vw, calc(100vw - 70px));
+      min-width: 90vw;
       box-sizing: border-box;
       animation: contentFadeIn 0.6s ease-out;
     }
@@ -211,12 +212,10 @@
   <!-- Socket.IO for Real-Time Updates -->
   <script>
     window.socketConfig = {
-      url: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '')
-           ? window.location.protocol + '//' + window.location.host
-           : 'https://petsona.online',
+      url: window.location.origin,
       options: {
         path: '/socket.io',
-        transports: ['websocket', 'polling'],
+        transports: ['polling', 'websocket'],
         upgrade: true,
         secure: true,
         reconnection: true,
