@@ -1,115 +1,120 @@
-<!-- Professional Glassmorphism Merchant Navbar -->
-<nav class="navbar-custom">
-  <div class="navbar-container">
-    <!-- Burger Button for Mobile (<1024px) -->
-    <button class="burger-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" data-tooltip="Menu">
-      <i class="fas fa-bars burger-icon"></i>
+<!-- Professional Glassmorphism Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container-fluid">
+    <!-- Burger Button - Only visible on <1024px -->
+    <button class="navbar-toggler d-lg-none border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" aria-label="Toggle navigation">
+      <div class="hamburger-menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
     </button>
 
-    <!-- Right-aligned Navigation Items -->
-    <div class="navbar-nav-right">
+    <!-- Spacer for centering -->
+    <div class="flex-grow-1"></div>
+
+    <!-- Right-aligned content -->
+    <div class="navbar-nav-right d-flex align-items-center">
       <!-- Notifications Dropdown -->
-      <div class="nav-btn notifications-btn" data-tooltip="Notifications">
-        <button class="nav-btn-trigger position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="nav-icon far fa-bell"></i>
-          <span class="notification-badge d-none" id="notification-badge"></span>
+      <div class="dropdown me-3">
+        <button class="nav-btn position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-tooltip="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="badge notification-badge d-none" id="notification-badge"></span>
         </button>
-        <div class="dropdown-menu notifications-dropdown">
+        <div class="dropdown-menu dropdown-menu-end notifications-dropdown">
           <div class="dropdown-header-custom">
-            <h6 class="dropdown-title">Notifications</h6>
+            <h6 class="mb-0">Notifications</h6>
             <a href="javascript:markAllNotificationsAsRead();" class="mark-read-link">Mark all as read</a>
           </div>
-          <div class="dropdown-divider-custom"></div>
+          <div class="dropdown-divider"></div>
           <div class="notifications-scroll-container">
-            <div class="empty-state">
-              <i class="fas fa-bell empty-icon"></i>
-              <span class="empty-text">Loading notifications...</span>
+            <div class="text-center text-muted py-4">
+              <i class="fas fa-bell mb-2"></i>
+              <div>Loading notifications...</div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Messages Dropdown -->
-      <div class="nav-btn messages-btn" data-tooltip="Messages">
-        <button class="nav-btn-trigger position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="nav-icon fa-regular fa-message"></i>
-          <span class="message-badge" id="unread-msg-badge">{{ unread_badge_count if unread_badge_count > 0 else '' }}</span>
+      {% if current_user.is_authenticated %}
+      <div class="dropdown me-3">
+        <button class="nav-btn position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-tooltip="Messages">
+          <i class="fa-regular fa-message"></i>
+          <span class="badge message-badge" id="unread-msg-badge">{{ unread_badge_count if unread_badge_count > 0 else '' }}</span>
         </button>
-        <div class="dropdown-menu messages-dropdown">
+        <div class="dropdown-menu dropdown-menu-end messages-dropdown">
           <div class="dropdown-header-custom">
-            <h6 class="dropdown-title">Recent Conversations</h6>
+            <h6 class="mb-0">Recent Conversations</h6>
           </div>
-          <div class="dropdown-divider-custom"></div>
+          <div class="dropdown-divider"></div>
           {% if recent_conversations %}
             <div class="messages-scroll-container">
               {% for conv in recent_conversations %}
                 {% set other_user = conv.get_other_user(current_user.id) %}
                 {% set unread_count = conv.get_unread_count(current_user.id) %}
-                <a href="{{ url_for('messages.conversation', conversation_id=conv.id) }}" class="message-item {% if unread_count > 0 %}unread{% endif %}">
-                  <div class="message-avatar">
+                <a href="{{ url_for('messages.conversation', conversation_id=conv.id) }}" class="dropdown-item-custom {% if unread_count > 0 %}unread{% endif %}">
+                  <div class="d-flex align-items-center">
                     {% if other_user.photo_url %}
-                      <img src="{{ url_for('static', filename=other_user.photo_url) }}" alt="{{ other_user.first_name }}">
+                      <img src="{{ url_for('static', filename=other_user.photo_url) }}" alt="{{ other_user.first_name }}" class="user-avatar">
                     {% else %}
-                      <div class="avatar-placeholder">{{ other_user.first_name[0] }}</div>
+                      <div class="user-avatar-placeholder">{{ other_user.first_name[0] }}</div>
+                    {% endif %}
+                    <div class="message-info">
+                      <div class="user-name">{{ other_user.first_name }} {{ other_user.last_name }}</div>
+                      <div class="message-preview">
+                        {% if unread_count > 0 %}
+                          <span class="unread-indicator">New message</span>
+                        {% else %}
+                          <span class="no-message">No message yet</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                    {% if unread_count > 0 %}
+                      <span class="unread-count">{{ unread_count if unread_count < 10 else '9+' }}</span>
                     {% endif %}
                   </div>
-                  <div class="message-content">
-                    <div class="message-name">{{ other_user.first_name }} {{ other_user.last_name }}</div>
-                    <div class="message-preview">
-                      {% if unread_count > 0 %}
-                        <span class="new-indicator">You have new message</span>
-                      {% else %}
-                        <span class="no-message">No message yet</span>
-                      {% endif %}
-                    </div>
-                  </div>
-                  {% if unread_count > 0 %}
-                    <span class="unread-count">{{ unread_count if unread_count < 10 else '9+' }}</span>
-                  {% endif %}
                 </a>
               {% endfor %}
             </div>
           {% else %}
-            <div class="empty-state">
-              <i class="fas fa-inbox empty-icon"></i>
-              <span class="empty-text">No conversations yet</span>
+            <div class="text-center text-muted py-4">
+              <i class="fas fa-inbox mb-2"></i>
+              <div>No conversations yet</div>
             </div>
           {% endif %}
         </div>
       </div>
+      {% endif %}
 
       <!-- User Profile Dropdown -->
-      <div class="nav-btn user-profile-btn" data-tooltip="Profile">
-        <button class="nav-btn-trigger d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <span class="user-name d-none d-xl-inline">{{ current_user.first_name or 'Merchant' }} {{ current_user.last_name or '' }}</span>
-          <div class="user-avatar">
-            <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
-                 alt="User Avatar">
-          </div>
+      {% if current_user.is_authenticated %}
+      <div class="dropdown">
+        <button class="user-profile-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
+               alt="User Avatar" class="user-avatar-small">
+          <span class="user-name">{{ current_user.first_name or 'User' }}</span>
+          <i class="fas fa-chevron-down ms-2"></i>
         </button>
-        <div class="dropdown-menu user-dropdown">
-          <div class="user-info">
-            <div class="user-avatar-large">
-              <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
-                   alt="User Avatar">
-            </div>
+        <div class="dropdown-menu dropdown-menu-end user-dropdown">
+          <div class="user-info-section">
+            <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
+                 alt="User Avatar" class="user-avatar-large">
             <div class="user-details">
-              <div class="user-fullname">{{ current_user.first_name or 'Merchant' }} {{ current_user.last_name or '' }}</div>
+              <div class="user-full-name">{{ current_user.first_name or 'User' }} {{ current_user.last_name or '' }}</div>
               <div class="user-email">{{ current_user.email or 'No email' }}</div>
             </div>
           </div>
-          <div class="dropdown-divider-custom"></div>
+          <div class="dropdown-divider"></div>
           <a href="{{ url_for('profile.profile') }}" class="dropdown-item-custom">
             <i class="fas fa-user"></i>
             <span>My Profile</span>
           </a>
-          <a href="{{ url_for('merchant.store') }}" class="dropdown-item-custom">
-            <i class="fas fa-store"></i>
-            <span>My Store</span>
-          </a>
           {% if current_user.registration_method == 'system' %}
-          <div class="dropdown-divider-custom"></div>
-          <div class="dropdown-section-title">Settings</div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-header-custom">
+            <h6 class="mb-0">Settings</h6>
+          </div>
           <a href="#" class="dropdown-item-custom" data-bs-toggle="modal" data-bs-target="#settingsAccountModal">
             <i class="fas fa-lock"></i>
             <span>Password & Security</span>
@@ -119,13 +124,14 @@
             <span>Two-Factor Authentication</span>
           </a>
           {% endif %}
-          <div class="dropdown-divider-custom"></div>
-          <a href="{{ url_for('auth.logout') }}" class="dropdown-item-custom logout">
+          <div class="dropdown-divider"></div>
+          <a href="{{ url_for('auth.logout') }}" class="dropdown-item-custom logout-item">
             <i class="fas fa-sign-out-alt"></i>
             <span>Logout</span>
           </a>
         </div>
       </div>
+      {% endif %}
     </div>
   </div>
 </nav>
@@ -134,209 +140,150 @@
 <style>
   /* ================= NAVBAR CONTAINER ================= */
   .navbar-custom {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 70px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(140, 0, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(140, 0, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(140, 0, 255, 0.08);
+    padding: 12px 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
     z-index: 1030;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .navbar-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-    padding: 0 20px;
-    max-width: 100%;
-  }
-
-  /* ================= BURGER BUTTON ================= */
-  .burger-btn {
-    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-    border: 1px solid rgba(140, 0, 255, 0.2);
-    border-radius: 12px;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* ================= HAMBURGER MENU ================= */
+  .hamburger-menu {
+    width: 24px;
+    height: 20px;
     position: relative;
-    overflow: hidden;
+    cursor: pointer;
   }
 
-  .burger-btn::before {
-    content: '';
+  .hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    border-radius: 2px;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(140, 0, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .burger-btn:hover::before {
-    opacity: 1;
+  .hamburger-line:nth-child(1) { top: 0; }
+  .hamburger-line:nth-child(2) { top: 50%; transform: translateY(-50%); }
+  .hamburger-line:nth-child(3) { bottom: 0; }
+
+  .navbar-toggler:focus {
+    box-shadow: none;
   }
 
-  .burger-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(140, 0, 255, 0.2);
-    border-color: rgba(140, 0, 255, 0.4);
+  .navbar-toggler:hover .hamburger-line {
+    background: linear-gradient(135deg, #7a00d9 0%, #9333ea 100%);
   }
 
-  .burger-btn:active {
-    transform: translateY(0);
-  }
-
-  .burger-icon {
-    font-size: 18px;
-    color: #8C00FF;
-    transition: all 0.3s ease;
-  }
-
-  .burger-btn:hover .burger-icon {
-    color: #7a00d9;
-    transform: scale(1.1);
-  }
-
-  /* ================= RIGHT NAVIGATION ================= */
+  /* ================= NAVIGATION BUTTONS ================= */
   .navbar-nav-right {
-    display: flex;
-    align-items: center;
     gap: 8px;
   }
 
   .nav-btn {
-    position: relative;
-  }
-
-  .nav-btn-trigger {
-    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    background: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(140, 0, 255, 0.2);
     border-radius: 12px;
-    width: 45px;
-    height: 45px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    color: #8C00FF;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    overflow: hidden;
+    cursor: pointer;
   }
 
-  .nav-btn-trigger::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(140, 0, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .nav-btn-trigger:hover::before {
-    opacity: 1;
-  }
-
-  .nav-btn-trigger:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(140, 0, 255, 0.2);
+  .nav-btn:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
     border-color: rgba(140, 0, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(140, 0, 255, 0.15);
   }
 
-  .nav-btn-trigger:active {
-    transform: translateY(0);
-  }
-
-  .nav-icon {
+  .nav-btn i {
     font-size: 18px;
-    color: #8C00FF;
     transition: all 0.3s ease;
   }
 
-  .nav-btn-trigger:hover .nav-icon {
-    color: #7a00d9;
+  .nav-btn:hover i {
     transform: scale(1.1);
-  }
-
-  /* ================= USER PROFILE BUTTON ================= */
-  .user-profile-btn .nav-btn-trigger {
-    padding: 0 12px;
-    width: auto;
-    min-width: 45px;
-  }
-
-  .user-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: #8C00FF;
-    margin-right: 10px;
-    transition: all 0.3s ease;
-  }
-
-  .user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid rgba(140, 0, 255, 0.2);
-    transition: all 0.3s ease;
-  }
-
-  .user-avatar:hover {
-    border-color: #8C00FF;
-    transform: scale(1.05);
-  }
-
-  .user-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 
   /* ================= BADGES ================= */
   .notification-badge,
   .message-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
     background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
     color: white;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
     font-size: 10px;
     font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    top: -4px;
+    right: -4px;
     border: 2px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  }
+
+  /* ================= USER PROFILE BUTTON ================= */
+  .user-profile-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(140, 0, 255, 0.2);
+    border-radius: 12px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    color: #8C00FF;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    gap: 8px;
+  }
+
+  .user-profile-btn:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    border-color: rgba(140, 0, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(140, 0, 255, 0.15);
+  }
+
+  .user-avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid rgba(140, 0, 255, 0.2);
+  }
+
+  .user-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #8C00FF;
   }
 
   /* ================= DROPDOWN MENUS ================= */
-  .dropdown-menu {
+  .notifications-dropdown,
+  .messages-dropdown,
+  .user-dropdown {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(140, 0, 255, 0.1);
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(140, 0, 255, 0.15);
-    padding: 0;
+    box-shadow: 0 20px 40px rgba(140, 0, 255, 0.15);
     margin-top: 12px;
     min-width: 320px;
     max-width: 400px;
@@ -345,171 +292,91 @@
   .dropdown-header-custom {
     padding: 16px 20px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(140, 0, 255, 0.1);
   }
 
-  .dropdown-title {
-    font-size: 16px;
-    font-weight: 700;
+  .dropdown-header-custom h6 {
     color: #8C00FF;
+    font-weight: 600;
     margin: 0;
   }
 
   .mark-read-link {
-    font-size: 12px;
-    color: #6c757d;
+    color: #a855f7;
     text-decoration: none;
-    transition: color 0.3s ease;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
   }
 
   .mark-read-link:hover {
-    color: #8C00FF;
+    color: #7a00d9;
+    text-decoration: underline;
   }
 
-  .dropdown-divider-custom {
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(140, 0, 255, 0.2) 50%, transparent 100%);
-    margin: 0;
-  }
-
-  /* ================= NOTIFICATIONS ================= */
-  .notifications-dropdown {
-    min-width: 350px;
-    max-width: 450px;
-  }
-
-  .notifications-scroll-container {
-    max-height: 300px;
-    overflow-y: auto;
-  }
-
-  /* ================= MESSAGES ================= */
-  .messages-dropdown {
-    min-width: 380px;
-    max-width: 450px;
-  }
-
-  .messages-scroll-container {
-    max-height: 350px;
-    overflow-y: auto;
-  }
-
-  .message-item {
-    display: flex;
-    align-items: center;
+  /* ================= DROPDOWN ITEMS ================= */
+  .dropdown-item-custom {
     padding: 12px 20px;
-    text-decoration: none;
-    color: #495057;
-    transition: all 0.3s ease;
-    border-bottom: 1px solid rgba(140, 0, 255, 0.05);
-  }
-
-  .message-item:hover {
-    background: linear-gradient(135deg, rgba(140, 0, 255, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
-    color: #8C00FF;
-  }
-
-  .message-item.unread {
-    background: linear-gradient(135deg, rgba(140, 0, 255, 0.03) 0%, rgba(168, 85, 247, 0.03) 100%);
-  }
-
-  .message-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 12px;
-    border: 2px solid rgba(140, 0, 255, 0.1);
-  }
-
-  .message-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .avatar-placeholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
-    color: white;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 16px;
-  }
-
-  .message-content {
-    flex: 1;
-  }
-
-  .message-name {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 2px;
-  }
-
-  .message-preview {
-    font-size: 12px;
-  }
-
-  .new-indicator {
-    color: #8C00FF;
-    font-weight: 500;
-  }
-
-  .no-message {
+    gap: 12px;
     color: #6c757d;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 4px 8px;
   }
 
-  .unread-count {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 10px;
-    font-weight: 700;
+  .dropdown-item-custom:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    color: #8C00FF;
+    transform: translateX(4px);
+  }
+
+  .dropdown-item-custom i {
+    width: 16px;
+    color: #adb5bd;
+    transition: all 0.3s ease;
+  }
+
+  .dropdown-item-custom:hover i {
+    color: #8C00FF;
+    transform: scale(1.1);
+  }
+
+  .logout-item {
+    color: #dc3545;
+  }
+
+  .logout-item:hover {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+
+  /* ================= USER INFO SECTION ================= */
+  .user-info-section {
+    padding: 16px 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-  }
-
-  /* ================= USER DROPDOWN ================= */
-  .user-dropdown {
-    min-width: 280px;
-  }
-
-  .user-info {
-    padding: 20px;
-    display: flex;
-    align-items: center;
+    gap: 12px;
   }
 
   .user-avatar-large {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 15px;
-    border: 3px solid rgba(140, 0, 255, 0.2);
-  }
-
-  .user-avatar-large img {
-    width: 100%;
-    height: 100%;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
     object-fit: cover;
+    border: 2px solid rgba(140, 0, 255, 0.2);
   }
 
   .user-details {
     flex: 1;
   }
 
-  .user-fullname {
-    font-size: 16px;
-    font-weight: 700;
+  .user-full-name {
+    font-weight: 600;
     color: #8C00FF;
     margin-bottom: 2px;
   }
@@ -519,108 +386,69 @@
     color: #6c757d;
   }
 
-  .dropdown-item-custom {
+  /* ================= MESSAGES STYLES ================= */
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid rgba(140, 0, 255, 0.2);
+  }
+
+  .user-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    color: white;
     display: flex;
     align-items: center;
-    padding: 12px 20px;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .message-info {
+    flex: 1;
+  }
+
+  .user-name {
+    font-weight: 600;
     color: #495057;
-    text-decoration: none;
-    transition: all 0.3s ease;
+    margin-bottom: 2px;
   }
 
-  .dropdown-item-custom:hover {
-    background: linear-gradient(135deg, rgba(140, 0, 255, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
-    color: #8C00FF;
-  }
-
-  .dropdown-item-custom i {
-    width: 18px;
-    margin-right: 12px;
-    color: #8C00FF;
-  }
-
-  .dropdown-item-custom.logout {
-    color: #dc3545;
-  }
-
-  .dropdown-item-custom.logout:hover {
-    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(176, 42, 55, 0.1) 100%);
-    color: #dc3545;
-  }
-
-  .dropdown-item-custom.logout i {
-    color: #dc3545;
-  }
-
-  .dropdown-section-title {
-    padding: 8px 20px 4px;
+  .message-preview {
     font-size: 12px;
-    font-weight: 700;
-    color: #8C00FF;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
   }
 
-  /* ================= EMPTY STATES ================= */
-  .empty-state {
-    padding: 40px 20px;
-    text-align: center;
+  .unread-indicator {
+    color: #8C00FF;
+    font-weight: 500;
+  }
+
+  .no-message {
     color: #6c757d;
   }
 
-  .empty-icon {
-    font-size: 32px;
-    margin-bottom: 12px;
-    opacity: 0.5;
-  }
-
-  .empty-text {
-    font-size: 14px;
-  }
-
-  /* ================= TOOLTIPS ================= */
-  .nav-btn[data-tooltip]:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
+  .unread-count {
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
     color: white;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 1000;
-    opacity: 0;
-    animation: fadeInTooltip 0.3s ease forwards;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 12px;
+    min-width: 20px;
+    text-align: center;
   }
 
-  .burger-btn[data-tooltip]:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 1000;
-    opacity: 0;
-    animation: fadeInTooltip 0.3s ease forwards;
+  /* ================= SCROLL CONTAINERS ================= */
+  .notifications-scroll-container,
+  .messages-scroll-container {
+    max-height: 300px;
+    overflow-y: auto;
   }
 
-  @keyframes fadeInTooltip {
-    to {
-      opacity: 1;
-      bottom: -40px;
-    }
-  }
-
-  /* ================= SCROLLBAR ================= */
   .notifications-scroll-container::-webkit-scrollbar,
   .messages-scroll-container::-webkit-scrollbar {
     width: 4px;
@@ -644,22 +472,21 @@
     background: linear-gradient(135deg, #7a00d9 0%, #9333ea 100%);
   }
 
-  /* ================= RESPONSIVE ADJUSTMENTS ================= */
+  /* ================= RESPONSIVE DESIGN ================= */
   @media (max-width: 1023px) {
     .navbar-custom {
-      left: 0;
+      left: 0 !important;
     }
 
-    .burger-btn {
-      display: flex !important;
+    .notifications-dropdown,
+    .messages-dropdown,
+    .user-dropdown {
+      min-width: 280px;
+      max-width: 320px;
     }
   }
 
   @media (min-width: 1024px) {
-    .burger-btn {
-      display: none !important;
-    }
-
     .navbar-custom {
       left: 70px;
       transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -671,23 +498,40 @@
   }
 
   @media (max-width: 576px) {
-    .navbar-container {
-      padding: 0 15px;
-    }
-
     .user-name {
-      display: none !important;
+      display: none;
     }
 
-    .dropdown-menu {
-      min-width: 280px;
-      max-width: 320px;
-    }
-
+    .notifications-dropdown,
     .messages-dropdown,
-    .notifications-dropdown {
+    .user-dropdown {
       min-width: 280px;
-      max-width: 320px;
+      max-width: 300px;
+    }
+  }
+
+  /* ================= TOOLTIPS ================= */
+  .nav-btn[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeInTooltipNav 0.3s ease forwards;
+  }
+
+  @keyframes fadeInTooltipNav {
+    to {
+      opacity: 1;
+      bottom: -45px;
     }
   /* ================= FULL-SCREEN MODALS FOR SMALL DEVICES ================= */
   @media (max-width: 768px) {
@@ -727,13 +571,3 @@
     }
   }
 </style>
-
-<!-- Notification Modal -->
-{% include 'partials/notification-modal.html' %}
-
-<!-- Settings Modals -->
-{% include 'partials/settings-account-modal.html' %}
-{% include 'partials/settings-2fa-modal.html' %}
-
-<script src="{{ url_for('static', filename='js/navbar-socket.js') }}"></script>
-<script src="{{ url_for('static', filename='js/navbar-notifications.js') }}"></script>
