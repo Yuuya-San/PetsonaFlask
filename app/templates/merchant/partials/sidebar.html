@@ -1,79 +1,77 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <!-- Brand Logo -->
-  <a href="{{ url_for('merchant.dashboard') }}" class="brand-link">
-    <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="brand-logo">
-    <span class="brand-text font-weight-light">Merchant</span>
-  </a>
+<div class="offcanvas offcanvas-start bg-dark text-white d-md-none" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+  <div class="offcanvas-header">
+    <a href="{{ url_for('merchant.dashboard') }}" class="d-flex align-items-center text-white text-decoration-none">
+      <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="me-2" style="height: 30px;">
+      <span class="fs-5 fw-light">Merchant</span>
+    </a>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <nav class="nav flex-column">
+      <a href="{{ url_for('merchant.dashboard') }}" class="nav-link text-white {% if request.endpoint == 'merchant.dashboard' %}active bg-primary{% endif %}">
+        <i class="fas fa-home me-2"></i>Dashboard
+      </a>
+      <a href="{{ url_for('profile.profile') }}" class="nav-link text-white {% if request.endpoint == 'profile.profile' %}active bg-primary{% endif %}">
+        <i class="fas fa-user-edit me-2"></i>My Profile
+      </a>
+      <a href="{{ url_for('merchant.species_index') }}" class="nav-link text-white {% if request.endpoint in ['merchant.species_index', 'merchant.view_species'] %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-database me-2"></i>Pet Database
+      </a>
+      <a href="{{ url_for('matching.quiz') }}" class="nav-link text-white {% if request.endpoint == 'matching.quiz' %}active bg-primary{% endif %}">
+        <i class="fas fa-heartbeat me-2"></i>Match Pet
+      </a>
+      <a href="{{ url_for('matching.history') }}" class="nav-link text-white {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active bg-primary{% endif %}">
+        <i class="fas fa-history me-2"></i>Match History
+      </a>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-        <!-- Dashboard -->
-        <li class="nav-item">
-          <a href="{{ url_for('merchant.dashboard') }}" class="nav-link {% if request.endpoint == 'merchant.dashboard' %}active{% endif %}">
-            <i class="nav-icon fas fa-home"></i>
-            <p>Dashboard</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('profile.profile') }}" class="nav-link {% if request.endpoint == 'profile.profile' %}active{% endif %}">
-            <i class="nav-icon fas fa-user-edit"></i>
-            <p>My Profile</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('merchant.species_index') }}" class="nav-link {% if request.endpoint in ['merchant.species_index', 'merchant.view_species'] %}active{% endif %}">
-            <i class="nav-icon fa-solid fa-database"></i>
-            <p>Pet Database</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('matching.quiz') }}" class="nav-link {% if request.endpoint == 'matching.quiz' %}active{% endif %}">
-            <i class="nav-icon fas fa-heartbeat"></i>
-            <p>Match Pet</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('matching.history') }}"
-              class="nav-link {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active{% endif %}">
-               <i class="nav-icon fas fa-history"></i>
-            <p>Match History</p>
-          </a>
-        </li>
-
-        <!-- Store -->
-        <li class="nav-item">
-          <a href="{{ url_for('merchant.store') if True else '#' }}" class="nav-link {% if request.endpoint in ['merchant.store', 'merchant.store_edit'] %}active{% endif %}">
-            <i class="nav-icon fas fa-store"></i>
-            <p>Store</p>
-          </a>
-        </li>
-
-        <!-- Bookings -->
-        <li class="nav-item">
-          <a href="{{ url_for('merchant.bookings_list') }}" class="nav-link {% if request.endpoint == 'merchant.bookings_list' %}active{% endif %}">
-            <i class="nav-icon fas fa-calendar"></i>
-            <p>Bookings</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('messages.support') }}" class="nav-link {% if request.endpoint == 'messages.support' %}active{% endif %}">
-            <i class="nav-icon fas fa-headset"></i>
-            <p>Support</p>
-          </a>
-        </li>
-
-      </ul>
+      <a href="{{ url_for('merchant.store') if True else '#' }}" class="nav-link text-white {% if request.endpoint in ['merchant.store', 'merchant.store_edit'] %}active bg-primary{% endif %}">
+        <i class="fas fa-store me-2"></i>Store
+      </a>
+      <a href="{{ url_for('merchant.bookings_list') }}" class="nav-link text-white {% if request.endpoint == 'merchant.bookings_list' %}active bg-primary{% endif %}">
+        <i class="fas fa-calendar me-2"></i>Bookings
+      </a>
+      <a href="{{ url_for('messages.support') }}" class="nav-link text-white {% if request.endpoint == 'messages.support' %}active bg-primary{% endif %}">
+        <i class="fas fa-headset me-2"></i>Support
+      </a>
     </nav>
   </div>
-</aside>
+</div>
+
+<!-- Desktop Sidebar -->
+<div class="d-none d-md-block bg-dark text-white" style="position: fixed; top: 0; left: 0; width: 250px; height: 100vh; overflow-y: auto;">
+  <div class="p-3">
+    <a href="{{ url_for('merchant.dashboard') }}" class="d-flex align-items-center text-white text-decoration-none mb-3">
+      <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="me-2" style="height: 30px;">
+      <span class="fs-5 fw-light">Merchant</span>
+    </a>
+    <nav class="nav flex-column">
+      <a href="{{ url_for('merchant.dashboard') }}" class="nav-link text-white {% if request.endpoint == 'merchant.dashboard' %}active bg-primary{% endif %}">
+        <i class="fas fa-home me-2"></i>Dashboard
+      </a>
+      <a href="{{ url_for('profile.profile') }}" class="nav-link text-white {% if request.endpoint == 'profile.profile' %}active bg-primary{% endif %}">
+        <i class="fas fa-user-edit me-2"></i>My Profile
+      </a>
+      <a href="{{ url_for('merchant.species_index') }}" class="nav-link text-white {% if request.endpoint in ['merchant.species_index', 'merchant.view_species'] %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-database me-2"></i>Pet Database
+      </a>
+      <a href="{{ url_for('matching.quiz') }}" class="nav-link text-white {% if request.endpoint == 'matching.quiz' %}active bg-primary{% endif %}">
+        <i class="fas fa-heartbeat me-2"></i>Match Pet
+      </a>
+      <a href="{{ url_for('matching.history') }}" class="nav-link text-white {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active bg-primary{% endif %}">
+        <i class="fas fa-history me-2"></i>Match History
+      </a>
+      <a href="{{ url_for('merchant.store') if True else '#' }}" class="nav-link text-white {% if request.endpoint in ['merchant.store', 'merchant.store_edit'] %}active bg-primary{% endif %}">
+        <i class="fas fa-store me-2"></i>Store
+      </a>
+      <a href="{{ url_for('merchant.bookings_list') }}" class="nav-link text-white {% if request.endpoint == 'merchant.bookings_list' %}active bg-primary{% endif %}">
+        <i class="fas fa-calendar me-2"></i>Bookings
+      </a>
+      <a href="{{ url_for('messages.support') }}" class="nav-link text-white {% if request.endpoint == 'messages.support' %}active bg-primary{% endif %}">
+        <i class="fas fa-headset me-2"></i>Support
+      </a>
+    </nav>
+  </div>
+</div>
 
 <!-- CSS for tab underline -->
 <style>

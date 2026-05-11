@@ -14,9 +14,11 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- AdminLTE -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin/plugins/fontawesome-free/css/all.min.css') }}?v=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin/dist/css/adminlte.min.css') }}?v=1.0">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <!-- Custom -->
     <link rel="stylesheet" href="{{ url_for('static', filename='merchant/custom.css') }}?v=1.0">
@@ -51,59 +53,66 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body class="hold-transition sidebar-mini sidebar-collapse layout-fixed bg-gradient-to-br from-white via-purple-50 to-white">
-<div class="wrapper">
-
-    {% include 'merchant/partials/navbar.html' %}
-    {% include 'merchant/partials/sidebar.html' %}
-
-    <!-- ================= ACTION LOADER (BUTTON / FORM) ================= -->
-    {% include 'shared/loader.html' %}
-
-    <!-- ================= SKELETON LOADER ================= -->
-    <div id="skeleton-wrapper">
-        {% block skeleton %}{% endblock %}
-    </div>
-
-    <!-- ================= REAL CONTENT ================= -->
-    <div id="page-content" class="d-none">
-
-        <div class="content-wrapper">
-            <section class="content pt-3">
-                <div class="container-fluid">
-
-                    <!-- ================= FLASH ================= -->
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            <div class="flash-container">
-                                {% for category, message in messages %}
-                                    <div class="flash flash-{{ category }}" data-dismiss-time="6400">
-                                        <div class="flash-icon">
-                                            {% if category == 'success' %}
-                                                <i class="fas fa-check-circle"></i>
-                                            {% elif category == 'danger' %}
-                                                <i class="fas fa-times-circle"></i>
-                                            {% elif category == 'warning' %}
-                                                <i class="fas fa-exclamation-triangle"></i>
-                                            {% else %}
-                                                <i class="fas fa-info-circle"></i>
-                                            {% endif %}
-                                        </div>
-                                        <div class="flash-content">{{ message }}</div>
-                                        <button class="flash-close" aria-label="Close notification">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    {% endwith %}
-
-                    {% block content %}{% endblock %}
-                </div>
-            </section>
+<body class="bg-gradient-to-br from-white via-purple-50 to-white">
+<div class="container-fluid p-0">
+    <div class="row g-0">
+        <!-- Sidebar -->
+        <div id="sidebar" class="col-auto bg-dark text-white d-none d-md-block" style="width: 250px; min-height: 100vh; position: fixed; left: 0; top: 0; z-index: 1030;">
+            {% include 'merchant/partials/sidebar.html' %}
         </div>
 
+        <!-- Main Content -->
+        <div class="col" style="margin-left: 250px;">
+            <!-- Navbar -->
+            <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="margin-left: 250px;">
+                {% include 'merchant/partials/navbar.html' %}
+            </nav>
+
+            <!-- Content Wrapper -->
+            <div class="content-wrapper" style="margin-top: 56px;">
+                <!-- ================= ACTION LOADER (BUTTON / FORM) ================= -->
+                {% include 'shared/loader.html' %}
+
+                <!-- ================= SKELETON LOADER ================= -->
+                <div id="skeleton-wrapper">
+                    {% block skeleton %}{% endblock %}
+                </div>
+
+                <!-- ================= REAL CONTENT ================= -->
+                <div id="page-content" class="d-none">
+                    <div class="container-fluid pt-3">
+                        <!-- ================= FLASH ================= -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                <div class="flash-container">
+                                    {% for category, message in messages %}
+                                        <div class="flash flash-{{ category }}" data-dismiss-time="6400">
+                                            <div class="flash-icon">
+                                                {% if category == 'success' %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% elif category == 'danger' %}
+                                                    <i class="fas fa-times-circle"></i>
+                                                {% elif category == 'warning' %}
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-info-circle"></i>
+                                                {% endif %}
+                                            </div>
+                                            <div class="flash-content">{{ message }}</div>
+                                            <button class="flash-close" aria-label="Close notification">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -127,117 +136,60 @@
 {% include 'partials/notification-modal.html' %}
 
 <!-- ================= JS: CRITICAL DEPENDENCIES ================= -->
-<!-- 1. jQuery (Required by AdminLTE and Bootstrap 4) -->
-<script src="{{ url_for('static', filename='admin/plugins/jquery/jquery.min.js') }}?v=3.6.0"></script>
-<script>
-  // Fallback jQuery from CDN if local load fails
-  if (typeof window.jQuery === 'undefined') {
-    var fallbackScript = document.createElement('script');
-    fallbackScript.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
-    fallbackScript.integrity = 'sha256-/xUj+3OJ+Y3oAKiH6jyCmMJk3Hr6zvN3O82ijvs0yvc=';
-    fallbackScript.crossOrigin = 'anonymous';
-    fallbackScript.onload = function() { console.log('[AdminLTE] jQuery loaded from CDN fallback'); };
-    fallbackScript.onerror = function() { console.error('[AdminLTE] jQuery CDN fallback failed'); };
-    document.head.appendChild(fallbackScript);
-  }
-</script>
+<!-- 1. jQuery (Required by some plugins) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJ+Y3oAKiH6jyCmMJk3Hr6zvN3O82ijvs0yvc=" crossorigin="anonymous"></script>
 
-<!-- 2. Bootstrap 4 JS (Required by AdminLTE) -->
-<script src="{{ url_for('static', filename='admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}?v=4.6.2"></script>
+<!-- 2. Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-<!-- 3. AdminLTE Application Script -->
-<script src="{{ url_for('static', filename='admin/dist/js/adminlte.min.js') }}?v=3.2.0"></script>
-
-<!-- 4. PetSona UI Fallback Controller (Deployment-Safe) -->
+<!-- 3. PetSona UI Controller (Bootstrap 5 Compatible) -->
 <script src="{{ url_for('static', filename='shared/petsona-ui-fallback.js') }}?v=1.0"></script>
 
-<!-- 5. Socket.IO for Real-time Updates -->
+<!-- 4. Socket.IO for Real-time Updates -->
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
 <!-- 5. Custom Application Scripts -->
-<script src="{{ url_for('static', filename='shared/adminlte-init.js') }}?v=1.0"></script>
 <script src="{{ url_for('static', filename='shared/loader.js') }}?v=1.0"></script>
 <script src="{{ url_for('static', filename='js/navbar-socket.js') }}?v=1.0"></script>
 <script src="{{ url_for('static', filename='js/navbar-notifications.js') }}?v=1.0"></script>
 <script src="{{ url_for('static', filename='js/socket-manager.js') }}?v=1.0"></script>
 
-<!-- ================= ADMINLTE INITIALIZATION ================= -->
+<!-- ================= BOOTSTRAP 5 INITIALIZATION ================= -->
 <script>
-  // Enhanced AdminLTE initialization with multiple retry strategies
-  function initializeAdminLTE() {
-    console.log('[AdminLTE] Initializing...');
-    
-    // Check if jQuery exists
-    if (typeof jQuery === 'undefined') {
-      console.error('[AdminLTE] jQuery not found');
-      return false;
-    }
-    
-    var $ = jQuery;
-    
-    // Check body classes
-    var bodyClasses = document.body.className;
-    console.log('[AdminLTE] Body classes:', bodyClasses);
-    
-    // Check if AdminLTE's layout method exists
-    if (typeof $.fn.layout !== 'function') {
-      console.error('[AdminLTE] $.fn.layout not found - AdminLTE JS may not be loaded');
-      return false;
-    }
-    
-    try {
-      // Initialize the layout
-      $('body').layout();
-      console.log('[AdminLTE] Layout initialized successfully');
-      console.log('[AdminLTE] Sidebar element found:', $('.main-sidebar').length);
-      console.log('[AdminLTE] Navbar element found:', $('.main-header').length);
-      
-      // Trigger pushmenu initialization
-      if (typeof $.AdminLTE !== 'undefined' && typeof $.AdminLTE.pushMenu !== 'undefined') {
-        $.AdminLTE.pushMenu.activate();
-        console.log('[AdminLTE] Push menu activated');
-      }
-      
-      return true;
-    } catch (error) {
-      console.error('[AdminLTE] Layout initialization error:', error.message);
-      console.error('[AdminLTE] Error details:', error);
-      return false;
-    }
-  }
-  
-  // Try initialization on document ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('[AdminLTE] DOMContentLoaded event fired');
-      setTimeout(initializeAdminLTE, 100);
-    });
-  } else {
-    // DOM already loaded
-    console.log('[AdminLTE] DOM already loaded, initializing now');
-    setTimeout(initializeAdminLTE, 100);
-  }
-  
-  // Fallback: retry after a delay
-  setTimeout(function() {
-    if (typeof jQuery !== 'undefined') {
-      var $ = jQuery;
-      var hasLayout = typeof $.fn.layout === 'function';
-      var bodyHasLayout = $('body').data('layout') || $('body').data('lte.layout');
-      
-      console.log('[AdminLTE] Health check - Layout function exists:', hasLayout);
-      console.log('[AdminLTE] Health check - Body has layout data:', !!bodyHasLayout);
-      
-      if (!bodyHasLayout && hasLayout) {
-        console.log('[AdminLTE] Running fallback initialization...');
-        initializeAdminLTE();
-      }
-    }
-  }, 500);
-</script>
+  // Bootstrap 5 UI initialization
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Bootstrap 5] Initializing...');
 
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Initialize popovers
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl);
+    });
+
+    console.log('[Bootstrap 5] Initialized successfully');
+  });
+</script>
 <!-- ================= SKELETON HANDLER ================= -->
 <script>
+
+window.addEventListener('load', () => {
+    const skeleton = document.getElementById('skeleton-wrapper');
+    const content = document.getElementById('page-content');
+
+    if (skeleton) skeleton.remove();
+    if (content) {
+        content.classList.remove('d-none');
+        // Small delay for smooth transition
+        setTimeout(() => content.classList.add('visible'), 50);
+    }
+});
+</script>
     
 window.addEventListener('load', () => {
     const skeleton = document.getElementById('skeleton-wrapper');

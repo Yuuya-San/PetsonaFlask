@@ -1,96 +1,94 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <!-- Brand Logo -->
-  <a href="{{ url_for('admin.dashboard') }}" class="brand-link">
-    <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="brand-logo">
-    <span class="brand-text font-weight-light">PetSona</span>
-  </a>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-        <!-- Dashboard -->
-        <li class="nav-item">
-          <a href="{{ url_for('admin.dashboard') }}" class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
-            <i class="nav-icon fas fa-home"></i>
-            <p>Dashboard</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('admin.users') }}" class="nav-link {% if request.endpoint == 'admin.users' %}active{% endif %}">
-            <i class="nav-icon fas fa-users"></i>
-            <p>All Users</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ url_for('admin.admin_add_user') }}" class="nav-link {% if request.endpoint == 'admin.admin_add_user' %}active{% endif %}">
-            <i class="nav-icon fas fa-user-plus"></i>
-            <p>Add User</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ url_for('admin.merchant_applications') }}" class="nav-link {% if request.endpoint == 'admin.merchant_applications' %}active{% endif %}">
-            <i class="nav-icon fa-solid fa-address-card"></i>
-            <p>Pending Applications</p>
-            
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ url_for('admin.archive_users') }}" class="nav-link {% if request.endpoint == 'admin.archive_users' %}active{% endif %}">
-            <i class="nav-icon fas fa-archive"></i>
-            <p>Archive Users</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('pets.species_index') }}"
-            class="nav-link {% if request.path.startswith('/pets/species') %}active{% endif %}">
-            <i class="nav-icon fa-solid fa-database"></i>
-            <p>Pet Database</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('matching.quiz') }}" class="nav-link {% if request.endpoint == 'matching.quiz' %}active{% endif %}">
-            <i class="nav-icon fas fa-heartbeat"></i>
-            <p>Match Pet</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('matching.history') }}"
-              class="nav-link {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active{% endif %}">
-               <i class="nav-icon fas fa-history"></i>
-            <p>Match History</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('pets.archived_items') }}" class="nav-link {% if request.endpoint == 'pets.archived_items' %}active{% endif %}">
-            <i class="nav-icon fa-solid fa-folder-minus"></i>
-            <p>Archived Pets</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ url_for('admin.audit_logs') }}" class="nav-link {% if request.endpoint == 'admin.audit_logs' %}active{% endif %}">
-            <i class="nav-icon fas fa-file-alt"></i>
-            <p>Audit Logs</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ url_for('admin.archive_audit_logs') }}" class="nav-link {% if request.endpoint == 'admin.archive_audit_logs' %}active{% endif %}">
-            <i class="nav-icon fa-solid fa-file-zipper"></i>
-            <p>Archive Audit</p>
-          </a>
-        </li>
-
-      </ul>
+<div class="offcanvas offcanvas-start bg-dark text-white d-md-none" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+  <div class="offcanvas-header">
+    <a href="{{ url_for('admin.dashboard') }}" class="d-flex align-items-center text-white text-decoration-none">
+      <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="me-2" style="height: 30px;">
+      <span class="fs-5 fw-light">PetSona</span>
+    </a>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <nav class="nav flex-column">
+      <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white {% if request.endpoint == 'admin.dashboard' %}active bg-primary{% endif %}">
+        <i class="fas fa-home me-2"></i>Dashboard
+      </a>
+      <a href="{{ url_for('admin.users') }}" class="nav-link text-white {% if request.endpoint == 'admin.users' %}active bg-primary{% endif %}">
+        <i class="fas fa-users me-2"></i>All Users
+      </a>
+      <a href="{{ url_for('admin.admin_add_user') }}" class="nav-link text-white {% if request.endpoint == 'admin.admin_add_user' %}active bg-primary{% endif %}">
+        <i class="fas fa-user-plus me-2"></i>Add User
+      </a>
+      <a href="{{ url_for('admin.merchant_applications') }}" class="nav-link text-white {% if request.endpoint == 'admin.merchant_applications' %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-address-card me-2"></i>Pending Applications
+      </a>
+      <a href="{{ url_for('admin.archive_users') }}" class="nav-link text-white {% if request.endpoint == 'admin.archive_users' %}active bg-primary{% endif %}">
+        <i class="fas fa-archive me-2"></i>Archive Users
+      </a>
+      <a href="{{ url_for('pets.species_index') }}" class="nav-link text-white {% if request.path.startswith('/pets/species') %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-database me-2"></i>Pet Database
+      </a>
+      <a href="{{ url_for('matching.quiz') }}" class="nav-link text-white {% if request.endpoint == 'matching.quiz' %}active bg-primary{% endif %}">
+        <i class="fas fa-heartbeat me-2"></i>Match Pet
+      </a>
+      <a href="{{ url_for('matching.history') }}" class="nav-link text-white {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active bg-primary{% endif %}">
+        <i class="fas fa-history me-2"></i>Match History
+      </a>
+      <a href="{{ url_for('pets.archived_items') }}" class="nav-link text-white {% if request.endpoint == 'pets.archived_items' %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-folder-minus me-2"></i>Archived Pets
+      </a>
+      <a href="{{ url_for('admin.audit_logs') }}" class="nav-link text-white {% if request.endpoint == 'admin.audit_logs' %}active bg-primary{% endif %}">
+        <i class="fas fa-file-alt me-2"></i>Audit Logs
+      </a>
+      <a href="{{ url_for('admin.archive_audit_logs') }}" class="nav-link text-white {% if request.endpoint == 'admin.archive_audit_logs' %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-file-zipper me-2"></i>Archive Audit
+      </a>
     </nav>
   </div>
-</aside>
+</div>
+
+<!-- Desktop Sidebar -->
+<div class="d-none d-md-block bg-dark text-white" style="position: fixed; top: 0; left: 0; width: 250px; height: 100vh; overflow-y: auto;">
+  <div class="p-3">
+    <a href="{{ url_for('admin.dashboard') }}" class="d-flex align-items-center text-white text-decoration-none mb-3">
+      <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="me-2" style="height: 30px;">
+      <span class="fs-5 fw-light">PetSona</span>
+    </a>
+    <nav class="nav flex-column">
+      <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white {% if request.endpoint == 'admin.dashboard' %}active bg-primary{% endif %}">
+        <i class="fas fa-home me-2"></i>Dashboard
+      </a>
+      <a href="{{ url_for('admin.users') }}" class="nav-link text-white {% if request.endpoint == 'admin.users' %}active bg-primary{% endif %}">
+        <i class="fas fa-users me-2"></i>All Users
+      </a>
+      <a href="{{ url_for('admin.admin_add_user') }}" class="nav-link text-white {% if request.endpoint == 'admin.admin_add_user' %}active bg-primary{% endif %}">
+        <i class="fas fa-user-plus me-2"></i>Add User
+      </a>
+      <a href="{{ url_for('admin.merchant_applications') }}" class="nav-link text-white {% if request.endpoint == 'admin.merchant_applications' %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-address-card me-2"></i>Pending Applications
+      </a>
+      <a href="{{ url_for('admin.archive_users') }}" class="nav-link text-white {% if request.endpoint == 'admin.archive_users' %}active bg-primary{% endif %}">
+        <i class="fas fa-archive me-2"></i>Archive Users
+      </a>
+      <a href="{{ url_for('pets.species_index') }}" class="nav-link text-white {% if request.path.startswith('/pets/species') %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-database me-2"></i>Pet Database
+      </a>
+      <a href="{{ url_for('matching.quiz') }}" class="nav-link text-white {% if request.endpoint == 'matching.quiz' %}active bg-primary{% endif %}">
+        <i class="fas fa-heartbeat me-2"></i>Match Pet
+      </a>
+      <a href="{{ url_for('matching.history') }}" class="nav-link text-white {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active bg-primary{% endif %}">
+        <i class="fas fa-history me-2"></i>Match History
+      </a>
+      <a href="{{ url_for('pets.archived_items') }}" class="nav-link text-white {% if request.endpoint == 'pets.archived_items' %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-folder-minus me-2"></i>Archived Pets
+      </a>
+      <a href="{{ url_for('admin.audit_logs') }}" class="nav-link text-white {% if request.endpoint == 'admin.audit_logs' %}active bg-primary{% endif %}">
+        <i class="fas fa-file-alt me-2"></i>Audit Logs
+      </a>
+      <a href="{{ url_for('admin.archive_audit_logs') }}" class="nav-link text-white {% if request.endpoint == 'admin.archive_audit_logs' %}active bg-primary{% endif %}">
+        <i class="fa-solid fa-file-zipper me-2"></i>Archive Audit
+      </a>
+    </nav>
+  </div>
+</div>
 
 <!-- CSS for tab underline -->
 <style>

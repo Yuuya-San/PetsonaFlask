@@ -1,188 +1,114 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- Sidebar toggle button -->
+    <button class="btn btn-outline-light d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+      <i class="fas fa-bars"></i>
+    </button>
 
-  <!-- Responsive Sidebar toggle button -->
-  <ul class="navbar-nav toggle-small">
-    <li class="nav-item">
-      <a class="nav-link sidebar-toggle-icon-sm" data-widget="pushmenu" href="#" role="button">
-        <i class="fas fa-bars"></i>
-      </a>
-    </li>
-  </ul>
-
-  <!-- Right navbar -->
-  <ul class="navbar-nav ml-auto">
-
-    <!-- Notifications Dropdown -->
-    <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="#" role="button">
-        <i class="far fa-bell"></i>
-        <span class="badge badge-warning text-white navbar-badge d-none" id="notification-badge"></span>
-      </a>
-      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right notifications-dropdown">
-        <span class="dropdown-header">Notifications
-          <div style="display: flex; gap: 8px; justify-content: flex-end;">
-            <a href="javascript:markAllNotificationsAsRead();" class="float-right" style="font-size: 0.8rem; text-decoration: none; color: #667eea;">
-              Mark all as read
-            </a>
-          </div>
-        </span>
-        <div class="dropdown-divider"></div>
-        <div class="notifications-scroll-container" style="overflow-y: auto;">
-          <div class="text-center text-muted py-4" style="font-size: 0.9rem;">
-            <i class="fas fa-bell mb-2" style="display: block; font-size: 1.5rem; opacity: 0.5;"></i>
-            Loading notifications...
-          </div>
-        </div>
-        <div class="dropdown-divider"></div>
+    <!-- Right navbar -->
+    <div class="ms-auto d-flex">
+      <!-- Notifications Dropdown -->
+      <div class="dropdown">
+        <button class="btn btn-outline-light position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="far fa-bell"></i>
+          <span class="badge bg-warning text-dark position-absolute top-0 start-100 translate-middle d-none" id="notification-badge"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><h6 class="dropdown-header">Notifications
+            <a href="javascript:markAllNotificationsAsRead();" class="float-end text-decoration-none" style="font-size: 0.8rem;">Mark all as read</a>
+          </h6></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><div class="notifications-scroll-container" style="max-height: 300px; overflow-y: auto;">
+            <div class="text-center text-muted py-4" style="font-size: 0.9rem;">
+              <i class="fas fa-bell mb-2" style="display: block; font-size: 1.5rem; opacity: 0.5;"></i>
+              Loading notifications...
+            </div>
+          </div></li>
+        </ul>
       </div>
-    </li>
 
-    <!-- Messages Dropdown -->
-    <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="#" role="button">
-        <i class="fa-regular fa-message"></i>
-        <span class="badge badge-danger navbar-badge" id="unread-msg-badge">{{ unread_badge_count if unread_badge_count > 0 else '' }}</span>
-      </a>
-      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right messages-dropdown">
-        <span class="dropdown-header">Recent Conversations</span>
-        <div class="dropdown-divider"></div>
-        {% if recent_conversations %}
-          <div class="messages-scroll-container">
-            {% for conv in recent_conversations %}
-              {% set other_user = conv.get_other_user(current_user.id) %}
-              {% set unread_count = conv.get_unread_count(current_user.id) %}
-              <a href="{{ url_for('messages.conversation', conversation_id=conv.id) }}" class="dropdown-item message-item {% if unread_count > 0 %}has-unread{% endif %}">
-                <div class="d-flex align-items-center justify-content-between" style="width: 100%;">
-                  <div class="d-flex align-items-center" style="min-width: 0; flex: 1;">
+      <!-- Messages Dropdown -->
+      <div class="dropdown ms-2">
+        <button class="btn btn-outline-light position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-regular fa-message"></i>
+          <span class="badge bg-danger position-absolute top-0 start-100 translate-middle" id="unread-msg-badge">{{ unread_badge_count if unread_badge_count > 0 else '' }}</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><h6 class="dropdown-header">Recent Conversations</h6></li>
+          <li><hr class="dropdown-divider"></li>
+          {% if recent_conversations %}
+            <div class="messages-scroll-container" style="max-height: 300px; overflow-y: auto;">
+              {% for conv in recent_conversations %}
+                {% set other_user = conv.get_other_user(current_user.id) %}
+                {% set unread_count = conv.get_unread_count(current_user.id) %}
+                <li><a href="{{ url_for('messages.conversation', conversation_id=conv.id) }}" class="dropdown-item {% if unread_count > 0 %}fw-bold{% endif %}">
+                  <div class="d-flex align-items-center">
                     {% if other_user.photo_url %}
-                      <img src="{{ url_for('static', filename=other_user.photo_url) }}" alt="{{ other_user.first_name }}" class="img-circle mr-2" style="width: 36px; height: 36px; object-fit: cover; flex-shrink: 0;">
+                      <img src="{{ url_for('static', filename=other_user.photo_url) }}" alt="{{ other_user.first_name }}" class="rounded-circle me-2" style="width: 36px; height: 36px; object-fit: cover;">
                     {% else %}
-                      <div class="img-circle mr-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: #c8a2ff; color: white; font-weight: bold; flex-shrink: 0;">{{ other_user.first_name[0] }}</div>
+                      <div class="rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: #c8a2ff; color: white; font-weight: bold;">{{ other_user.first_name[0] }}</div>
                     {% endif %}
-                    <div style="min-width: 0; flex: 1;">
-                      <p class="mb-0 text-dark font-weight-bold message-user-name">{{ other_user.first_name }} {{ other_user.last_name }}</p>
+                    <div>
+                      <div class="fw-bold">{{ other_user.first_name }} {{ other_user.last_name }}</div>
                       {% if unread_count > 0 %}
-                        <p class="mb-0 message-status-unread">You have new message</p>
+                        <small class="text-primary">You have new message</small>
                       {% else %}
-                        <p class="mb-0 message-status-read">No message yet</p>
+                        <small class="text-muted">No message yet</small>
                       {% endif %}
                     </div>
+                    {% if unread_count > 0 %}
+                      <span class="badge bg-primary ms-auto">{{ unread_count if unread_count < 10 else '9+' }}</span>
+                    {% endif %}
                   </div>
-                  {% if unread_count > 0 %}
-                    <span class="new-message-indicator" style="flex-shrink: 0; margin-left: 8px;">{{ unread_count if unread_count < 10 else '9+' }}</span>
-                  {% endif %}
-                </div>
-              </a>
-            {% endfor %}
-          </div>
-        {% else %}
-          <div class="text-center text-muted py-4" style="font-size: 0.9rem;">
-            <i class="fas fa-inbox mb-2" style="display: block; font-size: 1.5rem; opacity: 0.5;"></i>
-            No conversations yet
-          </div>
-        {% endif %}
-        <div class="dropdown-divider"></div>
+                </a></li>
+              {% endfor %}
+            </div>
+          {% else %}
+            <li><div class="text-center text-muted py-4" style="font-size: 0.9rem;">
+              <i class="fas fa-inbox mb-2" style="display: block; font-size: 1.5rem; opacity: 0.5;"></i>
+              No conversations yet
+            </div></li>
+          {% endif %}
+        </ul>
       </div>
-    </li>
 
-    <!-- User Dropdown (Glassmorphism Style) -->
-    <li class="nav-item dropdown">
-      <a class="nav-link d-flex align-items-center user-dropdown-trigger" data-toggle="dropdown" href="#" role="button">
-        <!-- User name on left side -->
-        <span class="mr-2 font-weight-bold d-none d-md-inline user-name-label">
-          {{ current_user.first_name or 'User' }} {{ current_user.last_name or '' }}
-        </span>
-        <!-- User avatar with fallback to default -->
-        <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
-             class="img-circle elevation-2 user-avatar"
-             alt="User Image">
-      </a>
-
-      <!-- Glassmorphism Dropdown Menu -->
-      <div class="dropdown-menu dropdown-menu-right glass-dropdown-menu">
-        
-        <!-- Profile Section Header -->
-        <div class="glass-dropdown-header">
+      <!-- User Dropdown -->
+      <div class="dropdown ms-2">
+        <button class="btn btn-outline-light d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="me-2 d-none d-md-inline">{{ current_user.first_name or 'User' }} {{ current_user.last_name or '' }}</span>
           <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
-               class="img-circle user-header-avatar"
-               alt="User Avatar">
-          <div class="user-info-header">
-            <p class="user-fullname">{{ current_user.first_name or 'User' }} {{ current_user.last_name or '' }}</p>
-            <p class="user-email-header">{{ current_user.email or 'No email' }}</p>
-          </div>
-        </div>
+               class="rounded-circle" alt="User Image" style="width: 32px; height: 32px; object-fit: cover;">
+        </button>
 
-        <div class="dropdown-divider glass-divider"></div>
-
-        <!-- Profile Section -->
-        <div class="glass-dropdown-section">
-          <p class="glass-section-title">
-            <i class="fas fa-user-circle mr-2"></i>Profile
-          </p>
-          <a href="{{ url_for('profile.profile') }}" class="glass-dropdown-item">
-            <div class="glass-item-icon">
-              <i class="fas fa-user"></i>
-            </div>
-            <div class="glass-item-content">
-              <span class="glass-item-label">My Profile</span>
-              <span class="glass-item-desc">View and edit profile</span>
-            </div>
-            <i class="fas fa-chevron-right glass-item-arrow"></i>
-          </a>
-        </div>
-
-        <div class="dropdown-divider glass-divider"></div>
-
-        <!-- Settings Section (Only for System Registration) -->
-        {% if current_user.registration_method == 'system' %}
-        <div class="glass-dropdown-section">
-          <p class="glass-section-title">
-            <i class="fas fa-cog mr-2"></i>Settings
-          </p>
-          
-          <!-- Account Settings Subsection -->
-          <div class="glass-subsection">
-            <p class="glass-subsection-title">Account</p>
-            <a href="#" class="glass-dropdown-item glass-dropdown-item-sm" data-toggle="modal" data-target="#settingsAccountModal">
-              <div class="glass-item-icon glass-item-icon-sm">
-                <i class="fas fa-lock"></i>
-              </div>
-              <div class="glass-item-content">
-                <span class="glass-item-label">Password & Security</span>
-              </div>
-              <i class="fas fa-chevron-right glass-item-arrow"></i>
-            </a>
-            <a href="#" class="glass-dropdown-item glass-dropdown-item-sm" onclick="openTwoFactorModal(); return false;">
-              <div class="glass-item-icon glass-item-icon-sm">
-                <i class="fas fa-shield-alt"></i>
-              </div>
-              <div class="glass-item-content">
-                <span class="glass-item-label">Two-Factor Authentication</span>
-              </div>
-              <i class="fas fa-chevron-right glass-item-arrow"></i>
-            </a>
-          </div>
-        </div>
-        {% endif %}
-
-        <div class="dropdown-divider glass-divider"></div>
-
-        <!-- Logout Section -->
-        <a href="{{ url_for('auth.logout') }}" class="glass-dropdown-item glass-logout-item">
-          <div class="glass-item-icon">
-            <i class="fas fa-sign-out-alt"></i>
-          </div>
-          <div class="glass-item-content">
-            <span class="glass-item-label">Logout</span>
-            <span class="glass-item-desc">Sign out from your account</span>
-          </div>
-          <i class="fas fa-chevron-right glass-item-arrow"></i>
-        </a>
-
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><div class="px-3 py-2">
+            <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
+                 class="rounded-circle me-2" alt="User Avatar" style="width: 40px; height: 40px; object-fit: cover;">
+            <strong>{{ current_user.first_name or 'User' }} {{ current_user.last_name or '' }}</strong><br>
+            <small class="text-muted">{{ current_user.email or 'No email' }}</small>
+          </div></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a href="{{ url_for('profile.profile') }}" class="dropdown-item">
+            <i class="fas fa-user me-2"></i>My Profile
+          </a></li>
+          {% if current_user.registration_method == 'system' %}
+          <li><hr class="dropdown-divider"></li>
+          <li><h6 class="dropdown-header">Settings</h6></li>
+          <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#settingsAccountModal">
+            <i class="fas fa-lock me-2"></i>Password & Security
+          </a></li>
+          <li><a href="#" class="dropdown-item" onclick="openTwoFactorModal(); return false;">
+            <i class="fas fa-shield-alt me-2"></i>Two-Factor Authentication
+          </a></li>
+          {% endif %}
+          <li><hr class="dropdown-divider"></li>
+          <li><a href="{{ url_for('auth.logout') }}" class="dropdown-item text-danger">
+            <i class="fas fa-sign-out-alt me-2"></i>Logout
+          </a></li>
+        </ul>
       </div>
-    </li>
-
-  </ul>
+    </div>
+  </div>
 </nav>
 
 <style>
