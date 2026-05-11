@@ -1,148 +1,703 @@
-<!-- Professional Merchant Navbar with Lavender Theme -->
-<nav class="navbar navbar-expand-lg navbar-light" style="background: linear-gradient(135deg, rgba(139,92,246,.08) 0%, rgba(168,85,247,.05) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(139,92,246,.15); box-shadow: 0 2px 20px rgba(139,92,246,.08); position: relative; z-index: 1000;">
-  <div class="container-fluid px-3 px-lg-4">
-    
-    <!-- Brand/Logo -->
-    <a class="navbar-brand" href="{{ url_for('merchant.dashboard') }}" style="display: flex; align-items: center; gap: 0.75rem; font-weight: 700; color: #1f2937; text-decoration: none; transition: all 0.3s ease;">
-      <i class="fas fa-store" style="color: #a855f7; font-size: 1.3rem; filter: drop-shadow(0 0 8px rgba(168,85,247,.4));"></i>
-      <span class="d-none d-md-inline" style="font-size: 1rem; letter-spacing: -0.5px;">Merchant</span>
-    </a>
-
-    <!-- Toggler for mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border: 1px solid rgba(139,92,246,.2); background: rgba(139,92,246,.1);">
-      <span class="navbar-toggler-icon" style="filter: invert(0.3);"></span>
+<!-- Professional Glassmorphism Merchant Navbar -->
+<nav class="navbar-custom">
+  <div class="navbar-container">
+    <!-- Burger Button for Mobile (<1024px) -->
+    <button class="burger-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" data-tooltip="Menu">
+      <i class="fas fa-bars burger-icon"></i>
     </button>
 
-    <!-- Navbar Items -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto" style="gap: 0.5rem;">
-
-        <!-- Notifications Dropdown -->
-        <li class="nav-item dropdown">
-          <a id="notificationDropdownToggle" class="nav-link" data-bs-toggle="dropdown" href="javascript:void(0)" aria-haspopup="true" aria-expanded="false" role="button" style="padding: 0.75rem; border-radius: 8px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(168,85,247,.1)'" onmouseout="this.style.background='transparent'">
-            <i class="far fa-bell" style="color: #a855f7; font-size: 1.2rem;"></i>
-            <span class="badge bg-warning text-white navbar-badge d-none" id="notification-badge" style="position: absolute; top: -5px; right: 0; font-size: 0.65rem; min-width: 18px; padding: 2px 5px;"></span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-end notifications-dropdown" style="min-width: 380px; max-height: 500px; border-radius: 12px; border: 1px solid rgba(139,92,246,.15); box-shadow: 0 8px 32px rgba(102,126,234,.12); background: #ffffff; overflow: hidden;">
-            <div style="padding: 15px 20px; border-bottom: 1px solid rgba(139,92,246,.1); display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 700; color: #1f2937; font-size: 0.95rem;">Notifications</span>
-              <a href="javascript:markAllNotificationsAsRead();" style="font-size: 0.8rem; text-decoration: none; color: #a855f7; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Mark all as read</a>
-            </div>
-            <div class="notifications-scroll-container" style="overflow-y: auto; max-height: 420px;">
-              <div class="text-center text-muted py-4" style="font-size: 0.9rem;">
-                <i class="fas fa-bell mb-2" style="display: block; font-size: 1.5rem; opacity: 0.5; color: #a855f7;"></i>
-                Loading notifications...
-              </div>
+    <!-- Right-aligned Navigation Items -->
+    <div class="navbar-nav-right">
+      <!-- Notifications Dropdown -->
+      <div class="nav-btn notifications-btn" data-tooltip="Notifications">
+        <button class="nav-btn-trigger position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="nav-icon far fa-bell"></i>
+          <span class="notification-badge d-none" id="notification-badge"></span>
+        </button>
+        <div class="dropdown-menu notifications-dropdown">
+          <div class="dropdown-header-custom">
+            <h6 class="dropdown-title">Notifications</h6>
+            <a href="javascript:markAllNotificationsAsRead();" class="mark-read-link">Mark all as read</a>
+          </div>
+          <div class="dropdown-divider-custom"></div>
+          <div class="notifications-scroll-container">
+            <div class="empty-state">
+              <i class="fas fa-bell empty-icon"></i>
+              <span class="empty-text">Loading notifications...</span>
             </div>
           </div>
-        </li>
+        </div>
+      </div>
 
-        <!-- Messages Dropdown -->
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-bs-toggle="dropdown" href="javascript:void(0)" aria-haspopup="true" aria-expanded="false" role="button" style="padding: 0.75rem; border-radius: 8px; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(168,85,247,.1)'" onmouseout="this.style.background='transparent'">
-            <i class="fa-regular fa-message" style="color: #a855f7; font-size: 1.2rem;"></i>
-            <span class="badge bg-danger navbar-badge" id="unread-msg-badge" style="position: absolute; top: -5px; right: 0; font-size: 0.65rem; min-width: 18px; padding: 2px 5px;">{{ unread_badge_count if unread_badge_count > 0 else '' }}</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-end messages-dropdown" style="min-width: 380px; max-height: 500px; border-radius: 12px; border: 1px solid rgba(139,92,246,.15); box-shadow: 0 8px 32px rgba(102,126,234,.12); background: #ffffff; overflow: hidden;">
-            <div style="padding: 15px 20px; border-bottom: 1px solid rgba(139,92,246,.1); font-weight: 700; color: #1f2937; font-size: 0.95rem;">Messages</div>
-            <div class="messages-scroll-container" style="overflow-y: auto; max-height: 420px;">
-              {% if recent_conversations %}
-                {% for conv in recent_conversations %}
-                  {% set other_user = conv.get_other_user(current_user.id) %}
-                  {% set unread_count = conv.get_unread_count(current_user.id) %}
-                  <a href="{{ url_for('messages.conversation', conversation_id=conv.id) }}" class="dropdown-item" style="padding: 12px 15px; border-bottom: 1px solid #f0f0f0; text-decoration: none; transition: all 0.3s ease; {% if unread_count > 0 %}background: rgba(168,85,247,.05){% endif %}" onmouseover="this.style.background='rgba(168,85,247,.1)'" onmouseout="this.style.background='{% if unread_count > 0 %}rgba(168,85,247,.05){% else %}transparent{% endif %}'">
-                    <div class="d-flex align-items-center justify-content-between" style="width: 100%;">
-                      <div class="d-flex align-items-center" style="min-width: 0; flex: 1;">
-                        {% if other_user.photo_url %}
-                          <img src="{{ url_for('static', filename=other_user.photo_url) }}" alt="{{ other_user.first_name }}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; margin-right: 10px;">
-                        {% else %}
-                          <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #c084fc); color: white; font-weight: bold; flex-shrink: 0; margin-right: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">{{ other_user.first_name[0] }}</div>
-                        {% endif %}
-                        <div style="min-width: 0; flex: 1;">
-                          <p style="margin: 0; color: #1f2937; font-weight: 600; font-size: 0.9rem;">{{ other_user.first_name }} {{ other_user.last_name }}</p>
-                          <p style="margin: 3px 0 0 0; color: #6b7280; font-size: 0.8rem;">{% if unread_count > 0 %}New message{% else %}No message{% endif %}</p>
-                        </div>
-                      </div>
+      <!-- Messages Dropdown -->
+      <div class="nav-btn messages-btn" data-tooltip="Messages">
+        <button class="nav-btn-trigger position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="nav-icon fa-regular fa-message"></i>
+          <span class="message-badge" id="unread-msg-badge">{{ unread_badge_count if unread_badge_count > 0 else '' }}</span>
+        </button>
+        <div class="dropdown-menu messages-dropdown">
+          <div class="dropdown-header-custom">
+            <h6 class="dropdown-title">Recent Conversations</h6>
+          </div>
+          <div class="dropdown-divider-custom"></div>
+          {% if recent_conversations %}
+            <div class="messages-scroll-container">
+              {% for conv in recent_conversations %}
+                {% set other_user = conv.get_other_user(current_user.id) %}
+                {% set unread_count = conv.get_unread_count(current_user.id) %}
+                <a href="{{ url_for('messages.conversation', conversation_id=conv.id) }}" class="message-item {% if unread_count > 0 %}unread{% endif %}">
+                  <div class="message-avatar">
+                    {% if other_user.photo_url %}
+                      <img src="{{ url_for('static', filename=other_user.photo_url) }}" alt="{{ other_user.first_name }}">
+                    {% else %}
+                      <div class="avatar-placeholder">{{ other_user.first_name[0] }}</div>
+                    {% endif %}
+                  </div>
+                  <div class="message-content">
+                    <div class="message-name">{{ other_user.first_name }} {{ other_user.last_name }}</div>
+                    <div class="message-preview">
                       {% if unread_count > 0 %}
-                        <span style="background: #a855f7; color: white; border-radius: 50%; min-width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; margin-left: 8px;">{{ unread_count if unread_count < 10 else '9+' }}</span>
+                        <span class="new-indicator">You have new message</span>
+                      {% else %}
+                        <span class="no-message">No message yet</span>
                       {% endif %}
                     </div>
-                  </a>
-                {% endfor %}
-              {% else %}
-                <div class="text-center text-muted py-4" style="font-size: 0.9rem;">
-                  <i class="fas fa-inbox mb-2" style="display: block; font-size: 1.5rem; opacity: 0.5; color: #a855f7;"></i>
-                  No messages yet
-                </div>
-              {% endif %}
+                  </div>
+                  {% if unread_count > 0 %}
+                    <span class="unread-count">{{ unread_count if unread_count < 10 else '9+' }}</span>
+                  {% endif %}
+                </a>
+              {% endfor %}
             </div>
-          </div>
-        </li>
+          {% else %}
+            <div class="empty-state">
+              <i class="fas fa-inbox empty-icon"></i>
+              <span class="empty-text">No conversations yet</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
 
-        <!-- User Profile Dropdown -->
-        <li class="nav-item dropdown">
-          <a class="nav-link d-flex align-items-center" data-bs-toggle="dropdown" href="javascript:void(0)" aria-haspopup="true" aria-expanded="false" role="button" style="padding: 0.5rem 0.75rem; border-radius: 8px; transition: all 0.3s ease; gap: 0.75rem;" onmouseover="this.style.background='rgba(168,85,247,.1)'" onmouseout="this.style.background='transparent'">
-            <span class="d-none d-md-inline" style="font-weight: 600; color: #1f2937; font-size: 0.9rem;">{{ current_user.first_name or 'Merchant' }}</span>
-            <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}" alt="User" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(168,85,247,.3);">
-          </a>
-          <div class="dropdown-menu dropdown-menu-end" style="border-radius: 12px; border: 1px solid rgba(139,92,246,.15); box-shadow: 0 8px 32px rgba(102,126,234,.12); min-width: 260px;">
-            <div style="padding: 15px 20px; border-bottom: 1px solid rgba(139,92,246,.1);">
-              <p style="margin: 0; font-weight: 700; color: #1f2937; font-size: 0.95rem;">{{ current_user.first_name }} {{ current_user.last_name }}</p>
-              <p style="margin: 5px 0 0 0; font-size: 0.8rem; color: #6b7280;">{{ current_user.email }}</p>
-            </div>
-            <a href="{{ url_for('profile.profile') }}" class="dropdown-item" style="padding: 10px 20px; color: #1f2937; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(168,85,247,.05)'" onmouseout="this.style.background='transparent'">
-              <i class="fas fa-user-circle" style="color: #a855f7; margin-right: 10px;"></i>My Profile
-            </a>
-            <a href="{{ url_for('merchant.store') }}" class="dropdown-item" style="padding: 10px 20px; color: #1f2937; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(168,85,247,.05)'" onmouseout="this.style.background='transparent'">
-              <i class="fas fa-store" style="color: #a855f7; margin-right: 10px;"></i>My Store
-            </a>
-            <div class="dropdown-divider" style="margin: 8px 0; border-top: 1px solid rgba(139,92,246,.1);"></div>
-            <a href="{{ url_for('auth.logout') }}" class="dropdown-item text-danger" style="padding: 10px 20px; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(220, 38, 38, 0.05)'" onmouseout="this.style.background='transparent'">
-              <i class="fas fa-sign-out-alt" style="margin-right: 10px;"></i>Logout
-            </a>
+      <!-- User Profile Dropdown -->
+      <div class="nav-btn user-profile-btn" data-tooltip="Profile">
+        <button class="nav-btn-trigger d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="user-name d-none d-xl-inline">{{ current_user.first_name or 'Merchant' }} {{ current_user.last_name or '' }}</span>
+          <div class="user-avatar">
+            <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
+                 alt="User Avatar">
           </div>
-        </li>
-      </ul>
+        </button>
+        <div class="dropdown-menu user-dropdown">
+          <div class="user-info">
+            <div class="user-avatar-large">
+              <img src="{{ url_for('static', filename=current_user.photo_url) if current_user.photo_url else url_for('static', filename='images/avatar/cat.png') }}"
+                   alt="User Avatar">
+            </div>
+            <div class="user-details">
+              <div class="user-fullname">{{ current_user.first_name or 'Merchant' }} {{ current_user.last_name or '' }}</div>
+              <div class="user-email">{{ current_user.email or 'No email' }}</div>
+            </div>
+          </div>
+          <div class="dropdown-divider-custom"></div>
+          <a href="{{ url_for('profile.profile') }}" class="dropdown-item-custom">
+            <i class="fas fa-user"></i>
+            <span>My Profile</span>
+          </a>
+          <a href="{{ url_for('merchant.store') }}" class="dropdown-item-custom">
+            <i class="fas fa-store"></i>
+            <span>My Store</span>
+          </a>
+          {% if current_user.registration_method == 'system' %}
+          <div class="dropdown-divider-custom"></div>
+          <div class="dropdown-section-title">Settings</div>
+          <a href="#" class="dropdown-item-custom" data-bs-toggle="modal" data-bs-target="#settingsAccountModal">
+            <i class="fas fa-lock"></i>
+            <span>Password & Security</span>
+          </a>
+          <a href="#" class="dropdown-item-custom" onclick="openTwoFactorModal(); return false;">
+            <i class="fas fa-shield-alt"></i>
+            <span>Two-Factor Authentication</span>
+          </a>
+          {% endif %}
+          <div class="dropdown-divider-custom"></div>
+          <a href="{{ url_for('auth.logout') }}" class="dropdown-item-custom logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
 
+<!-- Professional Glassmorphism Navbar Styles -->
 <style>
-  /* Ensure proper spacing and alignment */
-  .navbar-brand:hover {
+  /* ================= NAVBAR CONTAINER ================= */
+  .navbar-custom {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(140, 0, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(140, 0, 255, 0.1);
+    z-index: 1030;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 20px;
+    max-width: 100%;
+  }
+
+  /* ================= BURGER BUTTON ================= */
+  .burger-btn {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    border: 1px solid rgba(140, 0, 255, 0.2);
+    border-radius: 12px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .burger-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .burger-btn:hover::before {
+    opacity: 1;
+  }
+
+  .burger-btn:hover {
     transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(140, 0, 255, 0.2);
+    border-color: rgba(140, 0, 255, 0.4);
   }
-  
+
+  .burger-btn:active {
+    transform: translateY(0);
+  }
+
+  .burger-icon {
+    font-size: 18px;
+    color: #8C00FF;
+    transition: all 0.3s ease;
+  }
+
+  .burger-btn:hover .burger-icon {
+    color: #7a00d9;
+    transform: scale(1.1);
+  }
+
+  /* ================= RIGHT NAVIGATION ================= */
+  .navbar-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-btn {
+    position: relative;
+  }
+
+  .nav-btn-trigger {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    border: 1px solid rgba(140, 0, 255, 0.2);
+    border-radius: 12px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-btn-trigger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-btn-trigger:hover::before {
+    opacity: 1;
+  }
+
+  .nav-btn-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(140, 0, 255, 0.2);
+    border-color: rgba(140, 0, 255, 0.4);
+  }
+
+  .nav-btn-trigger:active {
+    transform: translateY(0);
+  }
+
+  .nav-icon {
+    font-size: 18px;
+    color: #8C00FF;
+    transition: all 0.3s ease;
+  }
+
+  .nav-btn-trigger:hover .nav-icon {
+    color: #7a00d9;
+    transform: scale(1.1);
+  }
+
+  /* ================= USER PROFILE BUTTON ================= */
+  .user-profile-btn .nav-btn-trigger {
+    padding: 0 12px;
+    width: auto;
+    min-width: 45px;
+  }
+
+  .user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #8C00FF;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(140, 0, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .user-avatar:hover {
+    border-color: #8C00FF;
+    transform: scale(1.05);
+  }
+
+  .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ================= BADGES ================= */
+  .notification-badge,
+  .message-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  }
+
+  /* ================= DROPDOWN MENUS ================= */
   .dropdown-menu {
-    animation: dropdownSlide 0.2s ease-out;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(140, 0, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(140, 0, 255, 0.15);
+    padding: 0;
+    margin-top: 12px;
+    min-width: 320px;
+    max-width: 400px;
   }
-  
-  @keyframes dropdownSlide {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
+
+  .dropdown-header-custom {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dropdown-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #8C00FF;
+    margin: 0;
+  }
+
+  .mark-read-link {
+    font-size: 12px;
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .mark-read-link:hover {
+    color: #8C00FF;
+  }
+
+  .dropdown-divider-custom {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(140, 0, 255, 0.2) 50%, transparent 100%);
+    margin: 0;
+  }
+
+  /* ================= NOTIFICATIONS ================= */
+  .notifications-dropdown {
+    min-width: 350px;
+    max-width: 450px;
+  }
+
+  .notifications-scroll-container {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  /* ================= MESSAGES ================= */
+  .messages-dropdown {
+    min-width: 380px;
+    max-width: 450px;
+  }
+
+  .messages-scroll-container {
+    max-height: 350px;
+    overflow-y: auto;
+  }
+
+  .message-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #495057;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(140, 0, 255, 0.05);
+  }
+
+  .message-item:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+    color: #8C00FF;
+  }
+
+  .message-item.unread {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.03) 0%, rgba(168, 85, 247, 0.03) 100%);
+  }
+
+  .message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 12px;
+    border: 2px solid rgba(140, 0, 255, 0.1);
+  }
+
+  .message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .message-content {
+    flex: 1;
+  }
+
+  .message-name {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 2px;
+  }
+
+  .message-preview {
+    font-size: 12px;
+  }
+
+  .new-indicator {
+    color: #8C00FF;
+    font-weight: 500;
+  }
+
+  .no-message {
+    color: #6c757d;
+  }
+
+  .unread-count {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ================= USER DROPDOWN ================= */
+  .user-dropdown {
+    min-width: 280px;
+  }
+
+  .user-info {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .user-avatar-large {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 15px;
+    border: 3px solid rgba(140, 0, 255, 0.2);
+  }
+
+  .user-avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-details {
+    flex: 1;
+  }
+
+  .user-fullname {
+    font-size: 16px;
+    font-weight: 700;
+    color: #8C00FF;
+    margin-bottom: 2px;
+  }
+
+  .user-email {
+    font-size: 12px;
+    color: #6c757d;
+  }
+
+  .dropdown-item-custom {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #495057;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .dropdown-item-custom:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+    color: #8C00FF;
+  }
+
+  .dropdown-item-custom i {
+    width: 18px;
+    margin-right: 12px;
+    color: #8C00FF;
+  }
+
+  .dropdown-item-custom.logout {
+    color: #dc3545;
+  }
+
+  .dropdown-item-custom.logout:hover {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(176, 42, 55, 0.1) 100%);
+    color: #dc3545;
+  }
+
+  .dropdown-item-custom.logout i {
+    color: #dc3545;
+  }
+
+  .dropdown-section-title {
+    padding: 8px 20px 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #8C00FF;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ================= EMPTY STATES ================= */
+  .empty-state {
+    padding: 40px 20px;
+    text-align: center;
+    color: #6c757d;
+  }
+
+  .empty-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+
+  .empty-text {
+    font-size: 14px;
+  }
+
+  /* ================= TOOLTIPS ================= */
+  .nav-btn[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeInTooltip 0.3s ease forwards;
+  }
+
+  .burger-btn[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeInTooltip 0.3s ease forwards;
+  }
+
+  @keyframes fadeInTooltip {
     to {
       opacity: 1;
-      transform: translateY(0);
+      bottom: -40px;
     }
   }
-  
-  .navbar-toggler:focus {
-    box-shadow: none;
-    background: rgba(168,85,247,.2) !important;
+
+  /* ================= SCROLLBAR ================= */
+  .notifications-scroll-container::-webkit-scrollbar,
+  .messages-scroll-container::-webkit-scrollbar {
+    width: 4px;
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 991px) {
-    .navbar-brand {
-      margin-bottom: 0.5rem;
+
+  .notifications-scroll-container::-webkit-scrollbar-track,
+  .messages-scroll-container::-webkit-scrollbar-track {
+    background: rgba(140, 0, 255, 0.1);
+    border-radius: 2px;
+  }
+
+  .notifications-scroll-container::-webkit-scrollbar-thumb,
+  .messages-scroll-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .notifications-scroll-container::-webkit-scrollbar-thumb:hover,
+  .messages-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #7a00d9 0%, #9333ea 100%);
+  }
+
+  /* ================= RESPONSIVE ADJUSTMENTS ================= */
+  @media (max-width: 1023px) {
+    .navbar-custom {
+      left: 0;
     }
-    .collapse.show {
-      background: rgba(255,255,255,.98);
-      backdrop-filter: blur(10px);
-      border-radius: 8px;
-      margin-top: 0.5rem;
+
+    .burger-btn {
+      display: flex !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .burger-btn {
+      display: none !important;
+    }
+
+    .navbar-custom {
+      left: 70px;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar-wrapper:hover ~ .navbar-custom {
+      left: 280px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .navbar-container {
+      padding: 0 15px;
+    }
+
+    .user-name {
+      display: none !important;
+    }
+
+    .dropdown-menu {
+      min-width: 280px;
+      max-width: 320px;
+    }
+
+    .messages-dropdown,
+    .notifications-dropdown {
+      min-width: 280px;
+      max-width: 320px;
     }
   }
 </style>
+
+<!-- Notification Modal -->
+{% include 'partials/notification-modal.html' %}
+
+<!-- Settings Modals -->
+{% include 'partials/settings-account-modal.html' %}
+{% include 'partials/settings-2fa-modal.html' %}
+
+<script src="{{ url_for('static', filename='js/navbar-socket.js') }}"></script>
+<script src="{{ url_for('static', filename='js/navbar-notifications.js') }}"></script>

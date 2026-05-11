@@ -1,148 +1,390 @@
-<div class="offcanvas offcanvas-start bg-dark text-white d-md-none" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
-  <div class="offcanvas-header">
-    <a href="{{ url_for('admin.dashboard') }}" class="d-flex align-items-center text-white text-decoration-none">
-      <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="me-2" style="height: 30px;">
-      <span class="fs-5 fw-light">PetSona</span>
-    </a>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+<!-- Collapsible Admin Sidebar -->
+<div class="sidebar-container d-none d-lg-block">
+  <div class="sidebar-wrapper" id="sidebar">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <a href="{{ url_for('admin.dashboard') }}" class="brand-link">
+        <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="brand-logo">
+        <span class="brand-text">PetSona</span>
+      </a>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar-nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="{{ url_for('admin.dashboard') }}" class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}" data-tooltip="Dashboard">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <span class="nav-text">Dashboard</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('admin.users') }}" class="nav-link {% if request.endpoint == 'admin.users' %}active{% endif %}" data-tooltip="All Users">
+            <i class="nav-icon fas fa-users"></i>
+            <span class="nav-text">All Users</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('admin.admin_add_user') }}" class="nav-link {% if request.endpoint == 'admin.admin_add_user' %}active{% endif %}" data-tooltip="Add User">
+            <i class="nav-icon fas fa-user-plus"></i>
+            <span class="nav-text">Add User</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('admin.merchant_applications') }}" class="nav-link {% if request.endpoint == 'admin.merchant_applications' %}active{% endif %}" data-tooltip="Pending Applications">
+            <i class="nav-icon fa-solid fa-address-card"></i>
+            <span class="nav-text">Pending Applications</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('admin.archive_users') }}" class="nav-link {% if request.endpoint == 'admin.archive_users' %}active{% endif %}" data-tooltip="Archive Users">
+            <i class="nav-icon fas fa-archive"></i>
+            <span class="nav-text">Archive Users</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('pets.species_index') }}" class="nav-link {% if request.path.startswith('/pets/species') %}active{% endif %}" data-tooltip="Pet Database">
+            <i class="nav-icon fa-solid fa-database"></i>
+            <span class="nav-text">Pet Database</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('matching.quiz') }}" class="nav-link {% if request.endpoint == 'matching.quiz' %}active{% endif %}" data-tooltip="Match Pet">
+            <i class="nav-icon fas fa-heartbeat"></i>
+            <span class="nav-text">Match Pet</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('matching.history') }}" class="nav-link {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active{% endif %}" data-tooltip="Match History">
+            <i class="nav-icon fas fa-history"></i>
+            <span class="nav-text">Match History</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('pets.archived_items') }}" class="nav-link {% if request.endpoint == 'pets.archived_items' %}active{% endif %}" data-tooltip="Archived Pets">
+            <i class="nav-icon fa-solid fa-folder-minus"></i>
+            <span class="nav-text">Archived Pets</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('admin.audit_logs') }}" class="nav-link {% if request.endpoint == 'admin.audit_logs' %}active{% endif %}" data-tooltip="Audit Logs">
+            <i class="nav-icon fas fa-file-alt"></i>
+            <span class="nav-text">Audit Logs</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('admin.archive_audit_logs') }}" class="nav-link {% if request.endpoint == 'admin.archive_audit_logs' %}active{% endif %}" data-tooltip="Archive Audit">
+            <i class="nav-icon fa-solid fa-file-zipper"></i>
+            <span class="nav-text">Archive Audit</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
-  <div class="offcanvas-body">
+</div>
+
+<!-- Mobile Offcanvas Admin Sidebar -->
+<div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+  <div class="offcanvas-header bg-white border-bottom">
+    <a href="{{ url_for('admin.dashboard') }}" class="d-flex align-items-center text-decoration-none">
+      <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="me-2" style="height: 30px;">
+      <span class="fs-5 fw-bold text-primary">PetSona</span>
+    </a>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body p-0">
     <nav class="nav flex-column">
-      <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white {% if request.endpoint == 'admin.dashboard' %}active bg-primary{% endif %}">
-        <i class="fas fa-home me-2"></i>Dashboard
+      <a href="{{ url_for('admin.dashboard') }}" class="nav-link border-bottom {% if request.endpoint == 'admin.dashboard' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-tachometer-alt me-3"></i>Dashboard
       </a>
-      <a href="{{ url_for('admin.users') }}" class="nav-link text-white {% if request.endpoint == 'admin.users' %}active bg-primary{% endif %}">
-        <i class="fas fa-users me-2"></i>All Users
+      <a href="{{ url_for('admin.users') }}" class="nav-link border-bottom {% if request.endpoint == 'admin.users' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-users me-3"></i>All Users
       </a>
-      <a href="{{ url_for('admin.admin_add_user') }}" class="nav-link text-white {% if request.endpoint == 'admin.admin_add_user' %}active bg-primary{% endif %}">
-        <i class="fas fa-user-plus me-2"></i>Add User
+      <a href="{{ url_for('admin.admin_add_user') }}" class="nav-link border-bottom {% if request.endpoint == 'admin.admin_add_user' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-user-plus me-3"></i>Add User
       </a>
-      <a href="{{ url_for('admin.merchant_applications') }}" class="nav-link text-white {% if request.endpoint == 'admin.merchant_applications' %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-address-card me-2"></i>Pending Applications
+      <a href="{{ url_for('admin.merchant_applications') }}" class="nav-link border-bottom {% if request.endpoint == 'admin.merchant_applications' %}active bg-primary text-white{% endif %}">
+        <i class="fa-solid fa-address-card me-3"></i>Pending Applications
       </a>
-      <a href="{{ url_for('admin.archive_users') }}" class="nav-link text-white {% if request.endpoint == 'admin.archive_users' %}active bg-primary{% endif %}">
-        <i class="fas fa-archive me-2"></i>Archive Users
+      <a href="{{ url_for('admin.archive_users') }}" class="nav-link border-bottom {% if request.endpoint == 'admin.archive_users' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-archive me-3"></i>Archive Users
       </a>
-      <a href="{{ url_for('pets.species_index') }}" class="nav-link text-white {% if request.path.startswith('/pets/species') %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-database me-2"></i>Pet Database
+      <a href="{{ url_for('pets.species_index') }}" class="nav-link border-bottom {% if request.path.startswith('/pets/species') %}active bg-primary text-white{% endif %}">
+        <i class="fa-solid fa-database me-3"></i>Pet Database
       </a>
-      <a href="{{ url_for('matching.quiz') }}" class="nav-link text-white {% if request.endpoint == 'matching.quiz' %}active bg-primary{% endif %}">
-        <i class="fas fa-heartbeat me-2"></i>Match Pet
+      <a href="{{ url_for('matching.quiz') }}" class="nav-link border-bottom {% if request.endpoint == 'matching.quiz' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-heartbeat me-3"></i>Match Pet
       </a>
-      <a href="{{ url_for('matching.history') }}" class="nav-link text-white {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active bg-primary{% endif %}">
-        <i class="fas fa-history me-2"></i>Match History
+      <a href="{{ url_for('matching.history') }}" class="nav-link border-bottom {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-history me-3"></i>Match History
       </a>
-      <a href="{{ url_for('pets.archived_items') }}" class="nav-link text-white {% if request.endpoint == 'pets.archived_items' %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-folder-minus me-2"></i>Archived Pets
+      <a href="{{ url_for('pets.archived_items') }}" class="nav-link border-bottom {% if request.endpoint == 'pets.archived_items' %}active bg-primary text-white{% endif %}">
+        <i class="fa-solid fa-folder-minus me-3"></i>Archived Pets
       </a>
-      <a href="{{ url_for('admin.audit_logs') }}" class="nav-link text-white {% if request.endpoint == 'admin.audit_logs' %}active bg-primary{% endif %}">
-        <i class="fas fa-file-alt me-2"></i>Audit Logs
+      <a href="{{ url_for('admin.audit_logs') }}" class="nav-link border-bottom {% if request.endpoint == 'admin.audit_logs' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-file-alt me-3"></i>Audit Logs
       </a>
-      <a href="{{ url_for('admin.archive_audit_logs') }}" class="nav-link text-white {% if request.endpoint == 'admin.archive_audit_logs' %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-file-zipper me-2"></i>Archive Audit
+      <a href="{{ url_for('admin.archive_audit_logs') }}" class="nav-link border-bottom {% if request.endpoint == 'admin.archive_audit_logs' %}active bg-primary text-white{% endif %}">
+        <i class="fa-solid fa-file-zipper me-3"></i>Archive Audit
       </a>
     </nav>
   </div>
 </div>
 
-<!-- Desktop Sidebar -->
-<div class="d-none d-md-block bg-dark text-white" style="position: fixed; top: 0; left: 0; width: 250px; height: 100vh; overflow-y: auto;">
-  <div class="p-3">
-    <a href="{{ url_for('admin.dashboard') }}" class="d-flex align-items-center text-white text-decoration-none mb-3">
-      <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="me-2" style="height: 30px;">
-      <span class="fs-5 fw-light">PetSona</span>
-    </a>
-    <nav class="nav flex-column">
-      <a href="{{ url_for('admin.dashboard') }}" class="nav-link text-white {% if request.endpoint == 'admin.dashboard' %}active bg-primary{% endif %}">
-        <i class="fas fa-home me-2"></i>Dashboard
-      </a>
-      <a href="{{ url_for('admin.users') }}" class="nav-link text-white {% if request.endpoint == 'admin.users' %}active bg-primary{% endif %}">
-        <i class="fas fa-users me-2"></i>All Users
-      </a>
-      <a href="{{ url_for('admin.admin_add_user') }}" class="nav-link text-white {% if request.endpoint == 'admin.admin_add_user' %}active bg-primary{% endif %}">
-        <i class="fas fa-user-plus me-2"></i>Add User
-      </a>
-      <a href="{{ url_for('admin.merchant_applications') }}" class="nav-link text-white {% if request.endpoint == 'admin.merchant_applications' %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-address-card me-2"></i>Pending Applications
-      </a>
-      <a href="{{ url_for('admin.archive_users') }}" class="nav-link text-white {% if request.endpoint == 'admin.archive_users' %}active bg-primary{% endif %}">
-        <i class="fas fa-archive me-2"></i>Archive Users
-      </a>
-      <a href="{{ url_for('pets.species_index') }}" class="nav-link text-white {% if request.path.startswith('/pets/species') %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-database me-2"></i>Pet Database
-      </a>
-      <a href="{{ url_for('matching.quiz') }}" class="nav-link text-white {% if request.endpoint == 'matching.quiz' %}active bg-primary{% endif %}">
-        <i class="fas fa-heartbeat me-2"></i>Match Pet
-      </a>
-      <a href="{{ url_for('matching.history') }}" class="nav-link text-white {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active bg-primary{% endif %}">
-        <i class="fas fa-history me-2"></i>Match History
-      </a>
-      <a href="{{ url_for('pets.archived_items') }}" class="nav-link text-white {% if request.endpoint == 'pets.archived_items' %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-folder-minus me-2"></i>Archived Pets
-      </a>
-      <a href="{{ url_for('admin.audit_logs') }}" class="nav-link text-white {% if request.endpoint == 'admin.audit_logs' %}active bg-primary{% endif %}">
-        <i class="fas fa-file-alt me-2"></i>Audit Logs
-      </a>
-      <a href="{{ url_for('admin.archive_audit_logs') }}" class="nav-link text-white {% if request.endpoint == 'admin.archive_audit_logs' %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-file-zipper me-2"></i>Archive Audit
-      </a>
-    </nav>
-  </div>
-</div>
-
-<!-- CSS for tab underline -->
+<!-- Professional Glassmorphism Sidebar Styles -->
 <style>
-  /* ================= SCROLLBAR STYLING ================= */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #8C00FF;
-    border-radius: 4px;
-    transition: background 0.3s ease;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #7a00d9;
-  }
-  /* Firefox scrollbar */
-  .sidebar {
-    scrollbar-width: thin;
-    scrollbar-color: #8C00FF transparent;
+  /* ================= SIDEBAR CONTAINER ================= */
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1040;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .nav-icon {
-    color: #a855f7 !important;
-    font-size: 1.1em !important;
+  .sidebar-wrapper {
+    width: 70px;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(140, 0, 255, 0.1);
+    box-shadow: 4px 0 20px rgba(140, 0, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sidebar-wrapper:hover {
+    width: 280px;
+    box-shadow: 8px 0 40px rgba(140, 0, 255, 0.15);
+  }
+
+  /* ================= SIDEBAR HEADER ================= */
+  .sidebar-header {
+    padding: 20px 15px;
+    border-bottom: 1px solid rgba(140, 0, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(140, 0, 255, 0.05) 100%);
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #8C00FF;
+    transition: all 0.3s ease;
+  }
+
+  .brand-link:hover {
+    color: #7a00d9;
+    transform: translateY(-1px);
+  }
+
+  .brand-logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    padding: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .brand-text {
+    font-size: 18px;
+    font-weight: 700;
+    margin-left: 12px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sidebar-wrapper:hover .brand-text {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ================= SIDEBAR NAVIGATION ================= */
+  .sidebar-nav {
+    padding: 20px 0;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-item {
+    margin-bottom: 8px;
   }
 
   .nav-link {
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
-  }
-  .nav-link.active {
-    border-bottom: 3px solid #8C00FF; /* highlight color */
-    color: #8C00FF;
-  }
-  .nav-link.active i {
-    color: #a855f7 !important;
-  }
-  .nav-header {
     display: flex;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #8C00FF;
+    padding: 14px 15px;
+    color: #6c757d;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 25px 25px 0;
+    margin-right: 10px;
+    position: relative;
+    overflow: hidden;
   }
-  .nav-header::after {
+
+  .nav-link::before {
     content: '';
-    flex-grow: 1;
-    margin-left: 8px;
-    border-bottom: 1px dashed #8C00FF;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .nav-link:hover::before,
+  .nav-link.active::before {
+    transform: scaleY(1);
+  }
+
+  .nav-link:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    color: #8C00FF;
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(140, 0, 255, 0.1);
+  }
+
+  .nav-link.active {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+    color: #8C00FF;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(140, 0, 255, 0.15);
+  }
+
+  .nav-icon {
+    width: 20px;
+    font-size: 18px;
+    margin-right: 15px;
+    transition: all 0.3s ease;
+    color: #adb5bd;
+  }
+
+  .nav-link:hover .nav-icon,
+  .nav-link.active .nav-icon {
+    color: #8C00FF;
+    transform: scale(1.1);
+  }
+
+  .nav-text {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+  }
+
+  .sidebar-wrapper:hover .nav-text {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ================= TOOLTIPS ================= */
+  .nav-link[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeInTooltip 0.3s ease forwards;
+  }
+
+  @keyframes fadeInTooltip {
+    to {
+      opacity: 1;
+      left: 85px;
+    }
+  }
+
+  /* ================= SCROLLBAR ================= */
+  .sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-track {
+    background: rgba(140, 0, 255, 0.1);
+    border-radius: 2px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #7a00d9 0%, #9333ea 100%);
+  }
+
+  /* ================= RESPONSIVE ADJUSTMENTS ================= */
+  @media (max-width: 1023px) {
+    .sidebar-container {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .main-content {
+      margin-left: 70px;
+      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar-wrapper:hover ~ .main-content {
+      margin-left: 280px;
+    }
+  }
+
+  /* ================= MOBILE OFFCANVAS ================= */
+  @media (max-width: 1023px) {
+    .offcanvas {
+      width: 280px !important;
+    }
+
+    .offcanvas .nav-link {
+      padding: 16px 20px;
+      font-size: 16px;
+    }
+
+    .offcanvas .nav-link i {
+      font-size: 20px;
+    }
   }
 </style>

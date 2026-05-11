@@ -61,14 +61,12 @@
         {% include 'user/partials/sidebar.html' %}
 
         <!-- Main Content -->
-        <div class="col main-content" style="margin-left: 0;">
+        <div class="main-content-wrapper">
             <!-- Navbar -->
-            <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-                {% include 'user/partials/navbar.html' %}
-            </nav>
+            {% include 'user/partials/navbar.html' %}
 
             <!-- Content Wrapper -->
-            <div class="content-wrapper" style="margin-top: 56px;">
+            <div class="content-wrapper">
 
                     <!-- ================= FLASH ================= -->
                     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -104,6 +102,30 @@
         </div>
     </div>
 </div>
+
+<!-- Layout Styles -->
+<style>
+  .main-content-wrapper {
+    margin-left: 0;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .content-wrapper {
+    padding-top: 80px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+
+  @media (min-width: 1024px) {
+    .main-content-wrapper {
+      margin-left: 70px;
+    }
+
+    .sidebar-wrapper:hover ~ .main-content-wrapper {
+      margin-left: 280px;
+    }
+  }
+</style>
 
 <!-- ================= MODAL SAFETY ================= -->
 <script>

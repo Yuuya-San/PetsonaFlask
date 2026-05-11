@@ -41,6 +41,27 @@
     * {
       scrollbar-width: none;
     }
+
+    /* Main Content Layout */
+    .main-content {
+        margin-top: 70px;
+        min-height: calc(100vh - 70px);
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .content-wrapper {
+        padding: 20px;
+    }
+
+    @media (min-width: 1024px) {
+        .main-content {
+            margin-left: 70px;
+        }
+
+        .sidebar-wrapper:hover ~ .main-content {
+            margin-left: 280px;
+        }
+    }
     </style>
 
     <!-- Font Awesome CDN -->
@@ -53,23 +74,17 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body class="bg-gradient-to-br from-white via-purple-50 to-white">
-<div class="container-fluid p-0">
-    <div class="row g-0">
-        <!-- Sidebar -->
-        <div id="sidebar" class="col-auto bg-dark text-white d-none d-md-block" style="width: 250px; min-height: 100vh; position: fixed; left: 0; top: 0; z-index: 1030;">
-            {% include 'merchant/partials/sidebar.html' %}
-        </div>
+<body class="bg-light">
+<!-- Include Sidebar -->
+{% include 'merchant/partials/sidebar.html' %}
 
-        <!-- Main Content -->
-        <div class="col" style="margin-left: 250px;">
-            <!-- Navbar -->
-            <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="margin-left: 250px;">
-                {% include 'merchant/partials/navbar.html' %}
-            </nav>
+<!-- Include Navbar -->
+{% include 'merchant/partials/navbar.html' %}
 
-            <!-- Content Wrapper -->
-            <div class="content-wrapper" style="margin-top: 56px;">
+<!-- Main Content Wrapper -->
+<div class="main-content">
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
                 <!-- ================= ACTION LOADER (BUTTON / FORM) ================= -->
                 {% include 'shared/loader.html' %}
 
@@ -177,19 +192,6 @@
 </script>
 <!-- ================= SKELETON HANDLER ================= -->
 <script>
-
-window.addEventListener('load', () => {
-    const skeleton = document.getElementById('skeleton-wrapper');
-    const content = document.getElementById('page-content');
-
-    if (skeleton) skeleton.remove();
-    if (content) {
-        content.classList.remove('d-none');
-        // Small delay for smooth transition
-        setTimeout(() => content.classList.add('visible'), 50);
-    }
-});
-</script>
     
 window.addEventListener('load', () => {
     const skeleton = document.getElementById('skeleton-wrapper');

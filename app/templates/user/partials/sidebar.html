@@ -1,144 +1,370 @@
-<div class="offcanvas offcanvas-start bg-dark text-white d-md-none" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
-  <div class="offcanvas-header">
-    <a href="{{ url_for('user.dashboard') }}" class="d-flex align-items-center text-white text-decoration-none">
-      <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="me-2" style="height: 30px;">
-      <span class="fs-5 fw-light">PetSona</span>
-    </a>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <nav class="nav flex-column">
-      <a href="{{ url_for('user.dashboard') }}" class="nav-link text-white {% if request.endpoint == 'user.dashboard' %}active bg-primary{% endif %}">
-        <i class="fas fa-home me-2"></i>Home
+<!-- Collapsible Sidebar -->
+<div class="sidebar-container d-none d-lg-block">
+  <div class="sidebar-wrapper" id="sidebar">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <a href="{{ url_for('user.dashboard') }}" class="brand-link">
+        <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="brand-logo">
+        <span class="brand-text">PetSona</span>
       </a>
-      <a href="{{ url_for('profile.profile') }}" class="nav-link text-white {% if request.endpoint == 'profile.profile' %}active bg-primary{% endif %}">
-        <i class="fas fa-user-edit me-2"></i>My Profile
-      </a>
-      <a href="{{ url_for('user.species_index') }}" class="nav-link text-white {% if request.endpoint in ['user.species_index', 'user.view_species'] %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-database me-2"></i>Pet Database
-      </a>
-      <a href="{{ url_for('matching.quiz') }}" class="nav-link text-white {% if request.endpoint == 'matching.quiz' %}active bg-primary{% endif %}">
-        <i class="fas fa-heartbeat me-2"></i>Match Pet
-      </a>
-      <a href="{{ url_for('user.nearby_services') }}" class="nav-link text-white {% if request.endpoint == 'user.nearby_services' %}active bg-primary{% endif %}">
-        <i class="fas fa-map-marker-alt me-2"></i>Nearby Services
-      </a>
+    </div>
 
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar-nav">
+      <ul class="nav-list">
         <li class="nav-item">
-          <a href="{{ url_for('matching.history') }}"
-              class="nav-link {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active{% endif %}">
-               <i class="nav-icon fas fa-history"></i>
-            <p>Match History</p>
+          <a href="{{ url_for('user.dashboard') }}" class="nav-link {% if request.endpoint == 'user.dashboard' %}active{% endif %}" data-tooltip="Home">
+            <i class="nav-icon fas fa-home"></i>
+            <span class="nav-text">Home</span>
           </a>
         </li>
 
-        <!-- My Bookings -->
         <li class="nav-item">
-          <a href="{{ url_for('user.my_bookings') }}" class="nav-link {% if request.endpoint == 'user.my_bookings' %}active{% endif %}">
+          <a href="{{ url_for('profile.profile') }}" class="nav-link {% if request.endpoint == 'profile.profile' %}active{% endif %}" data-tooltip="My Profile">
+            <i class="nav-icon fas fa-user-edit"></i>
+            <span class="nav-text">My Profile</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('user.species_index') }}" class="nav-link {% if request.endpoint in ['user.species_index', 'user.view_species'] %}active{% endif %}" data-tooltip="Pet Database">
+            <i class="nav-icon fa-solid fa-database"></i>
+            <span class="nav-text">Pet Database</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('matching.quiz') }}" class="nav-link {% if request.endpoint == 'matching.quiz' %}active{% endif %}" data-tooltip="Match Pet">
+            <i class="nav-icon fas fa-heartbeat"></i>
+            <span class="nav-text">Match Pet</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('matching.history') }}" class="nav-link {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active{% endif %}" data-tooltip="Match History">
+            <i class="nav-icon fas fa-history"></i>
+            <span class="nav-text">Match History</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('user.my_bookings') }}" class="nav-link {% if request.endpoint == 'user.my_bookings' %}active{% endif %}" data-tooltip="My Bookings">
             <i class="nav-icon fas fa-shopping-cart"></i>
-            <p>My Bookings</p>
+            <span class="nav-text">My Bookings</span>
           </a>
         </li>
 
-      <a href="{{ url_for('merchant.apply') }}" class="nav-link text-white {% if request.endpoint == 'merchant.apply' %}active bg-primary{% endif %}">
-        <i class="fas fa-store me-2"></i>Become a Partner
-      </a>
-      <a href="{{ url_for('messages.support') }}" class="nav-link text-white {% if request.endpoint == 'messages.support' %}active bg-primary{% endif %}">
-        <i class="fas fa-headset me-2"></i>Support
-      </a>
+        <li class="nav-item">
+          <a href="{{ url_for('user.nearby_services') }}" class="nav-link {% if request.endpoint == 'user.nearby_services' %}active{% endif %}" data-tooltip="Nearby Services">
+            <i class="nav-icon fas fa-map-marker-alt"></i>
+            <span class="nav-text">Nearby Services</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('merchant.apply') }}" class="nav-link {% if request.endpoint == 'merchant.apply' %}active{% endif %}" data-tooltip="Become a Partner">
+            <i class="nav-icon fas fa-store"></i>
+            <span class="nav-text">Become a Partner</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url_for('messages.support') }}" class="nav-link {% if request.endpoint == 'messages.support' %}active{% endif %}" data-tooltip="Support">
+            <i class="nav-icon fas fa-headset"></i>
+            <span class="nav-text">Support</span>
+          </a>
+        </li>
+      </ul>
     </nav>
   </div>
 </div>
 
-<!-- Desktop Sidebar -->
-<div class="d-none d-md-block bg-dark text-white" style="position: fixed; top: 0; left: 0; width: 250px; height: 100vh; overflow-y: auto;">
-  <div class="p-3">
-    <a href="{{ url_for('user.dashboard') }}" class="d-flex align-items-center text-white text-decoration-none mb-3">
+<!-- Mobile Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+  <div class="offcanvas-header bg-white border-bottom">
+    <a href="{{ url_for('user.dashboard') }}" class="d-flex align-items-center text-decoration-none">
       <img src="{{ url_for('static', filename='images/logo/petsona-logo.png') }}" alt="PetSona Logo" class="me-2" style="height: 30px;">
-      <span class="fs-5 fw-light">PetSona</span>
+      <span class="fs-5 fw-bold text-primary">PetSona</span>
     </a>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body p-0">
     <nav class="nav flex-column">
-      <a href="{{ url_for('user.dashboard') }}" class="nav-link text-white {% if request.endpoint == 'user.dashboard' %}active bg-primary{% endif %}">
-        <i class="fas fa-home me-2"></i>Home
+      <a href="{{ url_for('user.dashboard') }}" class="nav-link border-bottom {% if request.endpoint == 'user.dashboard' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-home me-3"></i>Home
       </a>
-      <a href="{{ url_for('profile.profile') }}" class="nav-link text-white {% if request.endpoint == 'profile.profile' %}active bg-primary{% endif %}">
-        <i class="fas fa-user-edit me-2"></i>My Profile
+      <a href="{{ url_for('profile.profile') }}" class="nav-link border-bottom {% if request.endpoint == 'profile.profile' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-user-edit me-3"></i>My Profile
       </a>
-      <a href="{{ url_for('user.species_index') }}" class="nav-link text-white {% if request.endpoint in ['user.species_index', 'user.view_species'] %}active bg-primary{% endif %}">
-        <i class="fa-solid fa-database me-2"></i>Pet Database
+      <a href="{{ url_for('user.species_index') }}" class="nav-link border-bottom {% if request.endpoint in ['user.species_index', 'user.view_species'] %}active bg-primary text-white{% endif %}">
+        <i class="fa-solid fa-database me-3"></i>Pet Database
       </a>
-      <a href="{{ url_for('matching.quiz') }}" class="nav-link text-white {% if request.endpoint == 'matching.quiz' %}active bg-primary{% endif %}">
-        <i class="fas fa-heartbeat me-2"></i>Match Pet
+      <a href="{{ url_for('matching.quiz') }}" class="nav-link border-bottom {% if request.endpoint == 'matching.quiz' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-heartbeat me-3"></i>Match Pet
       </a>
-      <a href="{{ url_for('user.nearby_services') }}" class="nav-link text-white {% if request.endpoint == 'user.nearby_services' %}active bg-primary{% endif %}">
-        <i class="fas fa-map-marker-alt me-2"></i>Nearby Services
+      <a href="{{ url_for('matching.history') }}" class="nav-link border-bottom {% if request.endpoint in ['matching.history', 'matching.general_results', 'matching.breed_match'] %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-history me-3"></i>Match History
       </a>
-      <a href="{{ url_for('merchant.apply') }}" class="nav-link text-white {% if request.endpoint == 'merchant.apply' %}active bg-primary{% endif %}">
-        <i class="fas fa-store me-2"></i>Become a Partner
+      <a href="{{ url_for('user.my_bookings') }}" class="nav-link border-bottom {% if request.endpoint == 'user.my_bookings' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-shopping-cart me-3"></i>My Bookings
       </a>
-      <a href="{{ url_for('messages.support') }}" class="nav-link text-white {% if request.endpoint == 'messages.support' %}active bg-primary{% endif %}">
-        <i class="fas fa-headset me-2"></i>Support
+      <a href="{{ url_for('user.nearby_services') }}" class="nav-link border-bottom {% if request.endpoint == 'user.nearby_services' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-map-marker-alt me-3"></i>Nearby Services
+      </a>
+      <a href="{{ url_for('merchant.apply') }}" class="nav-link border-bottom {% if request.endpoint == 'merchant.apply' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-store me-3"></i>Become a Partner
+      </a>
+      <a href="{{ url_for('messages.support') }}" class="nav-link border-bottom {% if request.endpoint == 'messages.support' %}active bg-primary text-white{% endif %}">
+        <i class="fas fa-headset me-3"></i>Support
       </a>
     </nav>
   </div>
 </div>
 
-<!-- CSS for sidebar styling -->
+<!-- Professional Glassmorphism Sidebar Styles -->
 <style>
-  /* ================= SCROLLBAR STYLING ================= */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  /* ================= SIDEBAR CONTAINER ================= */
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1040;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  ::-webkit-scrollbar-track {
-    background: transparent;
+
+  .sidebar-wrapper {
+    width: 70px;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(140, 0, 255, 0.1);
+    box-shadow: 4px 0 20px rgba(140, 0, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
   }
-  ::-webkit-scrollbar-thumb {
-    background: #8C00FF;
-    border-radius: 4px;
-    transition: background 0.3s ease;
+
+  .sidebar-wrapper:hover {
+    width: 280px;
+    box-shadow: 8px 0 40px rgba(140, 0, 255, 0.15);
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #7a00d9;
+
+  /* ================= SIDEBAR HEADER ================= */
+  .sidebar-header {
+    padding: 20px 15px;
+    border-bottom: 1px solid rgba(140, 0, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(140, 0, 255, 0.05) 100%);
   }
-  /* Firefox scrollbar */
-  .sidebar {
-    scrollbar-width: thin;
-    scrollbar-color: #8C00FF transparent;
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #8C00FF;
+    transition: all 0.3s ease;
+  }
+
+  .brand-link:hover {
+    color: #7a00d9;
+    transform: translateY(-1px);
+  }
+
+  .brand-logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    padding: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .brand-text {
+    font-size: 18px;
+    font-weight: 700;
+    margin-left: 12px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sidebar-wrapper:hover .brand-text {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ================= SIDEBAR NAVIGATION ================= */
+  .sidebar-nav {
+    padding: 20px 0;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-item {
+    margin-bottom: 8px;
   }
 
   .nav-link {
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
-  }
-  .nav-link.active {
-    border-bottom: 3px solid #8C00FF; /* highlight color */
-    color: #8C00FF !important;
-  }
-
-  /* Desktop sidebar adjustments */
-  @media (min-width: 768px) {
-    .main-content {
-      margin-left: 250px;
-    }
-  }
-</style>
-  .nav-link.active i {
-    color: #a855f7 !important;
-  }
-  .nav-header {
     display: flex;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #8C00FF;
+    padding: 14px 15px;
+    color: #6c757d;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 25px 25px 0;
+    margin-right: 10px;
+    position: relative;
+    overflow: hidden;
   }
-  .nav-header::after {
+
+  .nav-link::before {
     content: '';
-    flex-grow: 1;
-    margin-left: 8px;
-    border-bottom: 1px dashed #8C00FF;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .nav-link:hover::before,
+  .nav-link.active::before {
+    transform: scaleY(1);
+  }
+
+  .nav-link:hover {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    color: #8C00FF;
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(140, 0, 255, 0.1);
+  }
+
+  .nav-link.active {
+    background: linear-gradient(135deg, rgba(140, 0, 255, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+    color: #8C00FF;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(140, 0, 255, 0.15);
+  }
+
+  .nav-icon {
+    width: 20px;
+    font-size: 18px;
+    margin-right: 15px;
+    transition: all 0.3s ease;
+    color: #adb5bd;
+  }
+
+  .nav-link:hover .nav-icon,
+  .nav-link.active .nav-icon {
+    color: #8C00FF;
+    transform: scale(1.1);
+  }
+
+  .nav-text {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+  }
+
+  .sidebar-wrapper:hover .nav-text {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ================= TOOLTIPS ================= */
+  .nav-link[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeInTooltip 0.3s ease forwards;
+  }
+
+  @keyframes fadeInTooltip {
+    to {
+      opacity: 1;
+      left: 85px;
+    }
+  }
+
+  /* ================= SCROLLBAR ================= */
+  .sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-track {
+    background: rgba(140, 0, 255, 0.1);
+    border-radius: 2px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #8C00FF 0%, #a855f7 100%);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #7a00d9 0%, #9333ea 100%);
+  }
+
+  /* ================= RESPONSIVE ADJUSTMENTS ================= */
+  @media (max-width: 1023px) {
+    .sidebar-container {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .main-content {
+      margin-left: 70px;
+      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar-wrapper:hover ~ .main-content {
+      margin-left: 280px;
+    }
+  }
+
+  /* ================= MOBILE OFFCANVAS ================= */
+  @media (max-width: 1023px) {
+    .offcanvas {
+      width: 280px !important;
+    }
+
+    .offcanvas .nav-link {
+      padding: 16px 20px;
+      font-size: 16px;
+    }
+
+    .offcanvas .nav-link i {
+      font-size: 20px;
+    }
   }
 </style>

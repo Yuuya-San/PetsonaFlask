@@ -41,6 +41,27 @@
     /* Hide scrollbars */
     ::-webkit-scrollbar { width: 0; height: 0; }
     * { scrollbar-width: none; }
+
+    /* Main Content Layout */
+    .main-content {
+        margin-top: 70px;
+        min-height: calc(100vh - 70px);
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .content-wrapper {
+        padding: 20px;
+    }
+
+    @media (min-width: 1024px) {
+        .main-content {
+            margin-left: 70px;
+        }
+
+        .sidebar-wrapper:hover ~ .main-content {
+            margin-left: 280px;
+        }
+    }
     </style>
 
     <!-- Font Awesome Free CDN -->
@@ -55,23 +76,17 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body class="bg-gradient-to-br from-white via-purple-50 to-white">
-<div class="container-fluid p-0">
-    <div class="row g-0">
-        <!-- Sidebar -->
-        <div id="sidebar" class="col-auto bg-dark text-white d-none d-md-block" style="width: 250px; min-height: 100vh; position: fixed; left: 0; top: 0; z-index: 1030;">
-            {% include 'admin/partials/sidebar.html' %}
-        </div>
+<body class="bg-light">
+<!-- Include Sidebar -->
+{% include 'admin/partials/sidebar.html' %}
 
-        <!-- Main Content -->
-        <div class="col" style="margin-left: 250px;">
-            <!-- Navbar -->
-            <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="margin-left: 250px;">
-                {% include 'admin/partials/navbar.html' %}
-            </nav>
+<!-- Include Navbar -->
+{% include 'admin/partials/navbar.html' %}
 
-            <!-- Content Wrapper -->
-            <div class="content-wrapper" style="margin-top: 56px;">
+<!-- Main Content Wrapper -->
+<div class="main-content">
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
                 <!-- ================= ACTION LOADER (EXISTING) ================= -->
                 {% include 'shared/loader.html' %}
 
@@ -112,7 +127,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <!-- ================= MODAL SAFETY ================= -->
 <script>
